@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 97%;
+    --foreground: 0 0% 12%;
+    --card: 36 25% 95%;
+    --card-foreground: 0 0% 12%;
+    --popover: 40 33% 97%;
+    --popover-foreground: 0 0% 12%;
+    --primary: 0 0% 12%;
+    --primary-foreground: 40 33% 97%;
+    --secondary: 36 25% 95%;
+    --secondary-foreground: 0 0% 12%;
+    --muted: 36 25% 95%;
+    --muted-foreground: 20 5% 40%;
+    --accent: 12 55% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 10% 88%;
+    --input: 30 10% 88%;
+    --ring: 12 55% 50%;
+    --radius: 0.625rem;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    @apply bg-warm-cream text-deep-charcoal antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  @media (pointer: fine) {
+    body, a, button, input, textarea, select, [role="button"], .cursor-pointer {
+      cursor: none !important;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 700;
+  }
+
+  ::selection {
+    background-color: rgba(200, 86, 59, 0.2);
+  }
+}
+
+@layer components {
+  .script-accent {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+  }
+
+  .container-main {
+    @apply max-w-[1280px] mx-auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  @media (min-width: 768px) {
+    .container-main {
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-main {
+      padding-left: 80px;
+      padding-right: 80px;
+    }
+  }
+}
