@@ -39,9 +39,9 @@ function App() {
         <GrainOverlay />
         <Navigation />
         <main>
-          <HeroSection />
-          <WorkSection />
           <AboutSection />
+          <WorkSection />
+          <HeroSection />
           <ExperienceSection />
           <SpecializingSection />
           <TalksSection />
