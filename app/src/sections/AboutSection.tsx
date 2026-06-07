@@ -8,55 +8,129 @@ import MorphingShape from '@/components/MorphingShape';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ─── Marquee content ──────────────────────────────────────────── */
+const TICKER_ITEMS = [
+  'backend engineer',
+  '·',
+  'cloud infrastructure',
+  '·',
+  'distributed systems',
+  '·',
+  'lexipitch',
+  '·',
+  'open to work',
+  '·',
+  'node.js  /  golang',
+  '·',
+  'postgresql  /  redis',
+  '·',
+];
+
+/* ─── Stats ────────────────────────────────────────────────────── */
+const STATS = [
+  { value: '3+', label: 'years exp' },
+  { value: '12+', label: 'projects shipped' },
+  { value: '4', label: 'open-source libs' },
+];
+
 export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const photoRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const shapesRef = useRef<HTMLDivElement>(null);
+  const videoRef   = useRef<HTMLVideoElement>(null);
+  const leftRef    = useRef<HTMLDivElement>(null);
+  const rightRef   = useRef<HTMLDivElement>(null);
+  const badgeRef   = useRef<HTMLDivElement>(null);
+  const statsRef   = useRef<HTMLDivElement>(null);
+  const shapesRef  = useRef<HTMLDivElement>(null);
   const { reducedMotion } = useReducedMotion();
 
+  /* ── Video: play on scroll-enter, pause on leave ──────────────── */
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted      = true;
+    video.loop       = true;
+    video.playsInline = true;
+
+    const trigger = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top 90%',
+      end: 'bottom 10%',
+      onEnter:     () => video.play().catch(() => {}),
+      onLeave:     () => video.pause(),
+      onEnterBack: () => video.play().catch(() => {}),
+      onLeaveBack: () => video.pause(),
+    });
+
+    return () => { trigger.kill(); video.pause(); };
+  }, []);
+
+  /* ── GSAP entrance animations ─────────────────────────────────── */
   useEffect(() => {
     if (reducedMotion) return;
 
     const ctx = gsap.context(() => {
-      // Photo slides in from left
-      gsap.from(photoRef.current, {
-        opacity: 0,
-        x: -60,
-        duration: 1,
-        ease: 'power3.out',
+      const ease = 'power3.out';
+
+      /* Left column slides in from left */
+      gsap.from(leftRef.current, {
+        opacity: 0, x: -70, duration: 1.1, ease,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 80%',
+          start: 'top 78%',
           toggleActions: 'play none none none',
         },
       });
 
-      // Decorative shapes fade in
-      gsap.from(shapesRef.current?.children || [], {
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.15,
-        ease: 'power2.out',
+      /* Video badge drops in */
+      gsap.from(badgeRef.current, {
+        opacity: 0, y: 18, duration: 0.7, ease, delay: 0.35,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 70%',
+          start: 'top 78%',
           toggleActions: 'play none none none',
         },
       });
 
-      // Text content line-by-line
-      const textEls = textRef.current?.querySelectorAll('.reveal-line');
-      if (textEls) {
-        gsap.from(textEls, {
-          opacity: 0,
-          y: 20,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: 'power3.out',
+      /* Right column: each .ab-clip-inner slides up from its clip container */
+      const clips = rightRef.current?.querySelectorAll('.ab-clip-inner');
+      if (clips) {
+        gsap.from(clips, {
+          y: '105%',
+          duration: 0.75,
+          stagger: 0.10,
+          ease,
           scrollTrigger: {
-            trigger: textRef.current,
+            trigger: rightRef.current,
             start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+
+      /* Stats pop in */
+      const statEls = statsRef.current?.children;
+      if (statEls) {
+        gsap.from(statEls, {
+          opacity: 0, y: 22, scale: 0.88,
+          duration: 0.55, stagger: 0.12, ease: 'back.out(1.5)',
+          scrollTrigger: {
+            trigger: statsRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+
+      /* Decorative shapes */
+      const shapeEls = shapesRef.current?.children;
+      if (shapeEls) {
+        gsap.from(shapeEls, {
+          opacity: 0, scale: 0.6, duration: 0.8, stagger: 0.15,
+          ease: 'back.out(1.7)',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 70%',
             toggleActions: 'play none none none',
           },
         });
@@ -70,69 +144,169 @@ export default function AboutSection() {
     <section
       ref={sectionRef}
       id="about"
-      className="bg-warm-cream relative pt-32 pb-24 lg:pt-40 lg:pb-32"
+      className="relative bg-warm-cream overflow-hidden"
     >
-      <div className="container-main">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
-          {/* Left Column - Photo */}
-          <div ref={photoRef} className="lg:w-[45%] relative">
-            <div className="relative rounded-2xl overflow-hidden">
-              <img
-                src="/images/about-photo.jpg"
-                alt="Raghav with his cat Ziggy"
-                className="w-full aspect-[3/4] object-cover"
-              />
-              {/* Photo tag */}
-              <div className="absolute bottom-4 left-4 bg-deep-charcoal text-white px-4 py-2 rounded-full">
-                <span className="font-body font-medium text-xs tracking-wide">
-                  Raghav & his cat, Ziggy
-                </span>
-              </div>
-            </div>
+      {/* ── Marquee ticker strip (top border) ─────────────────── */}
+      <div className="ab-ticker-strip">
+        <div className="ab-ticker-track">
+          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+            <span key={i} className="ab-ticker-item">
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
 
-            {/* Decorative shapes around photo */}
-            <div ref={shapesRef} className="absolute inset-0 pointer-events-none">
-              <MorphingShape
-                type="star"
-                color="#3A7056"
-                size={70}
-                className="absolute -top-6 -right-4"
-              />
-              <MorphingShape
-                type="swirl"
-                color="#F4A8B0"
-                size={60}
-                className="absolute -bottom-4 -left-8"
-              />
-              <MorphingShape
-                type="smiley"
-                color="#E2A74F"
-                size={50}
-                className="absolute top-[40%] -left-10"
-              />
+      {/* ── Decorative shapes (absolute, pointer-events: none) ─── */}
+      <div ref={shapesRef} className="absolute inset-0 pointer-events-none z-10">
+        <MorphingShape
+          type="starburst"
+          color="#C8563B"
+          size={72}
+          className="absolute top-12 right-[30%]"
+        />
+        <MorphingShape
+          type="star"
+          color="#3A7056"
+          size={56}
+          className="absolute bottom-24 left-[44%]"
+        />
+        <MorphingShape
+          type="waves"
+          color="#E2A74F"
+          size={68}
+          className="absolute top-[42%] right-[6%]"
+        />
+        <MorphingShape
+          type="swirl"
+          color="#F4A8B0"
+          size={50}
+          className="absolute bottom-12 right-[18%]"
+        />
+      </div>
+
+      {/* ── Main two-column body ───────────────────────────────── */}
+      <div className="flex flex-col lg:flex-row min-h-[90vh]">
+
+        {/* ── LEFT: Video panel ──────────────────────────────────── */}
+        <div
+          ref={leftRef}
+          className="relative lg:w-[44%] w-full overflow-hidden"
+          style={{ minHeight: '420px' }}
+        >
+          <video
+            ref={videoRef}
+            src="/images/video.mp4"
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ pointerEvents: 'none', userSelect: 'none' }}
+          />
+
+          {/* Vignette overlay */}
+          <div className="ab-video-vignette" />
+
+          {/* Film-label badge */}
+          <div
+            ref={badgeRef}
+            className="ab-film-badge"
+          >
+            <span className="ab-film-badge__dot" />
+            <span className="ab-film-badge__text">ABOUT / 01</span>
+          </div>
+
+          {/* Bottom frosted tag */}
+          <div className="ab-glass-tag">
+            <span className="ab-glass-tag__name">Raghav Juneja</span>
+            <span className="ab-glass-tag__role">Backend Engineer</span>
+          </div>
+        </div>
+
+        {/* ── RIGHT: Type column ─────────────────────────────────── */}
+        <div
+          ref={rightRef}
+          className="lg:w-[56%] w-full flex flex-col justify-center
+                     px-8 sm:px-12 lg:px-16 xl:px-20
+                     py-16 lg:py-24"
+        >
+          {/* Eyebrow */}
+          <div className="ab-line-reveal mb-6">
+            <div className="ab-clip-inner">
+              <p className="ab-eyebrow">
+                <span className="ab-eyebrow__line" />
+                Who I Am
+              </p>
             </div>
           </div>
 
-          {/* Right Column - Text */}
-          <div ref={textRef} className="lg:w-[55%] lg:pt-8">
-            <h2 className="reveal-line font-display font-bold text-deep-charcoal leading-[1.05] tracking-[-0.02em]" style={{ fontSize: 'clamp(26px, 3.5vw, 44px)' }}>
-              Hi, I'm Raghav Juneja — a <ScriptWord className="text-[1.1em]">low-ego, high-impact</ScriptWord> product design leader based in Berlin, Germany.
-            </h2>
+          {/* Headline */}
+          <div className="ab-line-reveal mb-8">
+            <div className="ab-clip-inner">
+              <h2 className="ab-headline">
+                Hi, I'm Raghav —{' '}
+                <ScriptWord className="text-[1.08em]">
+                  low-latency,
+                </ScriptWord>{' '}
+                high-impact{' '}
+                <span className="ab-headline__accent">backend engineer.</span>
+              </h2>
+            </div>
+          </div>
 
-            <p className="reveal-line mt-8 font-body text-lg text-mid-gray leading-relaxed">
-              Over the last 10+ years, I've built a career around designing with empathy and clarity, collaborating across disciplines, and helping teams bring clarity to complexity.
-            </p>
+          {/* Para 1 */}
+          <div className="ab-line-reveal">
+            <div className="ab-clip-inner">
+              <p className="ab-body">
+                Over the last 3+ years I've architected cloud-native services
+                that handle millions of requests, built event-driven pipelines
+                on top of Kafka and Redis, and shipped resilient APIs used in
+                production at Lexipitch and beyond.
+              </p>
+            </div>
+          </div>
 
-            <p className="reveal-line mt-6 font-body text-lg text-mid-gray leading-relaxed">
-              As a Principal Design Manager, I lead with intentionality and data, guiding designers to not just build great products, but to ask better questions, challenge assumptions, and always consider the 'why' behind the work.
-            </p>
+          {/* Para 2 */}
+          <div className="ab-line-reveal mt-5">
+            <div className="ab-clip-inner">
+              <p className="ab-body">
+                I care deeply about system reliability, developer experience,
+                and clean abstractions — turning hairy distributed-systems
+                problems into elegant, maintainable solutions at scale.
+              </p>
+            </div>
+          </div>
 
-            <div className="reveal-line mt-10">
+          {/* Stats row */}
+          <div ref={statsRef} className="ab-stats mt-10">
+            {STATS.map(({ value, label }) => (
+              <div key={label} className="ab-stat">
+                <span className="ab-stat__value">{value}</span>
+                <span className="ab-stat__label">{label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="ab-line-reveal mt-10">
+            <div className="ab-clip-inner">
               <PillButton href="#experience" script>
-                Learn about how I lead
+                See my experience
               </PillButton>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* ── Bottom marquee divider ─────────────────────────────── */}
+      <div className="ab-ticker-strip ab-ticker-strip--bottom">
+        <div className="ab-ticker-track ab-ticker-track--reverse">
+          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+            <span key={i} className="ab-ticker-item">
+              {item}
+            </span>
+          ))}
         </div>
       </div>
     </section>
