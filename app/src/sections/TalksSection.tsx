@@ -128,7 +128,7 @@ export default function TalksSection() {
           className="font-display font-bold text-deep-charcoal leading-[1.05] tracking-[-0.02em]"
           style={{ fontSize: 'clamp(28px, 3.5vw, 44px)' }}
         >
-          Talks for Designers
+          I love to WRITE
         </h2>
 
         {/* Talk Cards Grid */}

@@ -10,7 +10,7 @@ const skills = [
   { title: 'delivering on business goals', image: 'delivering-on-goals.png' },
   { title: 'systems thinking', image: 'system-thinking.png' },
   { title: 'cross-functional leadership', image: 'cross-functional-leadership.png' },
-  { title: 'mentoring designers', image: 'mentoring-designers.png' },
+  { title: 'mentoring fellows & mentees', image: 'mentoring-designers.png' },
   { title: 'product analytics', image: 'product-analytics.png' },
   { title: 'growth design', image: 'growth-design.png' },
   { title: 'user research', image: 'user-research.png' },
@@ -310,6 +310,52 @@ export default function SpecializingSection() {
                 />
               ))}
             </div>
+            {/* ── Hover hint ── */}
+            <div
+              style={{
+                marginTop: '2rem',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+              }}
+            >
+              {/* Breathing dot */}
+              <span
+                aria-hidden="true"
+                style={{
+                  display: 'inline-block',
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: 'rgba(210, 100, 60, 0.7)',
+                  flexShrink: 0,
+                  marginTop: '7px',
+                  animation: 'dot-pulse 2.8s ease-in-out infinite',
+                }}
+              />
+
+              <p
+                style={{
+                  fontFamily: "'Caveat', cursive",
+                  fontSize: 'clamp(17px, 2vw, 21px)',
+                  color: 'rgba(160, 70, 40, 0.82)',
+                  margin: 0,
+                  lineHeight: 1.5,
+                  letterSpacing: '0.01em',
+                }}
+              >
+                Each skill above hides a small world — hover to glimpse it.{' '}
+                <span
+                  style={{
+                    fontSize: '0.85em',
+                    color: 'rgba(160, 70, 40, 0.55)',
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  Abstract illustrations in the spirit of Calder &amp; Art Nouveau.
+                </span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -326,6 +372,10 @@ export default function SpecializingSection() {
           0%   { background-position: 200% center; }
           100% { background-position: -200% center; }
         }
+        @keyframes dot-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.85); }
+  50%       { opacity: 1;   transform: scale(1.2);  }
+}
       `}</style>
     </section>
   );

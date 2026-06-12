@@ -1,314 +1,203 @@
-import { useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import PillButton from '@/components/PillButton';
-import ScriptWord from '@/components/ScriptWord';
-import MorphingShape from '@/components/MorphingShape';
+import { useEffect, useRef, useState } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
-
-/* ─── Marquee content ──────────────────────────────────────────── */
-const TICKER_ITEMS = [
-  'backend engineer',
-  '·',
-  'cloud infrastructure',
-  '·',
-  'distributed systems',
-  '·',
-  'lexipitch',
-  '·',
-  'open to work',
-  '·',
-  'node.js  /  golang',
-  '·',
-  'postgresql  /  redis',
-  '·',
+const TICKER = [
+  "backend engineer","·","cloud infrastructure","·","distributed systems","·",
+  "lexipitch","·","open to work","·","node.js / golang","·","postgresql / redis","·",
 ];
 
-/* ─── Stats ────────────────────────────────────────────────────── */
-const STATS = [
-  { value: '3+', label: 'years exp' },
-  { value: '12+', label: 'projects shipped' },
-  { value: '4', label: 'open-source libs' },
-];
+/* Letter-split helper */
+function Letters({ text, cls = "", offset = 0 }) {
+  return (
+    <span className={cls}>
+      {text.split("").map((ch, i) => (
+        <span key={i} className="l" style={{ "--i": offset + i }}>
+          {ch === " " ? "\u00A0" : ch}
+        </span>
+      ))}
+    </span>
+  );
+}
 
-export default function AboutSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const videoRef   = useRef<HTMLVideoElement>(null);
-  const leftRef    = useRef<HTMLDivElement>(null);
-  const rightRef   = useRef<HTMLDivElement>(null);
-  const badgeRef   = useRef<HTMLDivElement>(null);
-  const statsRef   = useRef<HTMLDivElement>(null);
-  const shapesRef  = useRef<HTMLDivElement>(null);
-  const { reducedMotion } = useReducedMotion();
+function StarBurst({ color, size }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 60 60" fill="none">
+      {[0, 45, 90, 135].map((r) => (
+        <line key={r} x1="30" y1="3" x2="30" y2="57"
+          stroke={color} strokeWidth="4.5" strokeLinecap="round"
+          transform={`rotate(${r} 30 30)`} />
+      ))}
+      <circle cx="30" cy="30" r="5" fill={color} />
+    </svg>
+  );
+}
 
-  /* ── Video: play on scroll-enter, pause on leave ──────────────── */
+function Flower({ color, size }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 60 60" fill={color}>
+      {[0, 90, 180, 270].map((r) => (
+        <ellipse key={r} cx="30" cy="15" rx="12" ry="16"
+          transform={`rotate(${r} 30 30)`} />
+      ))}
+      <circle cx="30" cy="30" r="9" fill={color} />
+    </svg>
+  );
+}
+
+export default function HeroSection() {
+  const videoRef = useRef(null);
+  const [go, setGo] = useState(false);
+
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.muted      = true;
-    video.loop       = true;
-    video.playsInline = true;
-
-    const trigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: 'top 90%',
-      end: 'bottom 10%',
-      onEnter:     () => video.play().catch(() => {}),
-      onLeave:     () => video.pause(),
-      onEnterBack: () => video.play().catch(() => {}),
-      onLeaveBack: () => video.pause(),
-    });
-
-    return () => { trigger.kill(); video.pause(); };
+    const t = setTimeout(() => setGo(true), 60);
+    return () => clearTimeout(t);
   }, []);
 
-  /* ── GSAP entrance animations ─────────────────────────────────── */
   useEffect(() => {
-    if (reducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      const ease = 'power3.out';
-
-      /* Left column slides in from left */
-      gsap.from(leftRef.current, {
-        opacity: 0, x: -70, duration: 1.1, ease,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 78%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      /* Video badge drops in */
-      gsap.from(badgeRef.current, {
-        opacity: 0, y: 18, duration: 0.7, ease, delay: 0.35,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 78%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      /* Right column: each .ab-clip-inner slides up from its clip container */
-      const clips = rightRef.current?.querySelectorAll('.ab-clip-inner');
-      if (clips) {
-        gsap.from(clips, {
-          y: '105%',
-          duration: 0.75,
-          stagger: 0.10,
-          ease,
-          scrollTrigger: {
-            trigger: rightRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
-
-      /* Stats pop in */
-      const statEls = statsRef.current?.children;
-      if (statEls) {
-        gsap.from(statEls, {
-          opacity: 0, y: 22, scale: 0.88,
-          duration: 0.55, stagger: 0.12, ease: 'back.out(1.5)',
-          scrollTrigger: {
-            trigger: statsRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
-
-      /* Decorative shapes */
-      const shapeEls = shapesRef.current?.children;
-      if (shapeEls) {
-        gsap.from(shapeEls, {
-          opacity: 0, scale: 0.6, duration: 0.8, stagger: 0.15,
-          ease: 'back.out(1.7)',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [reducedMotion]);
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true; v.loop = true; v.playsInline = true;
+    v.play().catch(() => {});
+  }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="relative bg-warm-cream overflow-hidden"
-    >
-      {/* ── Marquee ticker strip (top border) ─────────────────── */}
-      <div className="ab-ticker-strip">
-        <div className="ab-ticker-track">
-          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-            <span key={i} className="ab-ticker-item">
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,800&family=Caveat:wght@700&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #F5F1E6; overflow-x: hidden; }
 
-      {/* ── Decorative shapes (absolute, pointer-events: none) ─── */}
-      <div ref={shapesRef} className="absolute inset-0 pointer-events-none z-10">
-        <MorphingShape
-          type="starburst"
-          color="#C8563B"
-          size={72}
-          className="absolute top-12 right-[30%]"
-        />
-        <MorphingShape
-          type="star"
-          color="#3A7056"
-          size={56}
-          className="absolute bottom-24 left-[44%]"
-        />
-        <MorphingShape
-          type="waves"
-          color="#E2A74F"
-          size={68}
-          className="absolute top-[42%] right-[6%]"
-        />
-        <MorphingShape
-          type="swirl"
-          color="#F4A8B0"
-          size={50}
-          className="absolute bottom-12 right-[18%]"
-        />
-      </div>
+        .hero-root { font-family: 'Inter', system-ui, sans-serif; background: #F5F1E6; }
 
-      {/* ── Main two-column body ───────────────────────────────── */}
-      <div className="flex flex-col lg:flex-row min-h-[90vh]">
+        /* NAV */
+        .hn { display:flex; align-items:center; justify-content:space-between; padding:20px 44px; }
+        .hn__logo { width:36px; height:36px; border-radius:50%; border:2px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#1a1a1a; text-decoration:none; }
+        .hn__links { display:flex; gap:36px; list-style:none; }
+        .hn__links a { font-size:13px; font-weight:800; color:#1a1a1a; text-decoration:none; opacity:.5; transition:opacity .18s; }
+        .hn__links a:hover { opacity:1; }
 
-        {/* ── LEFT: Video panel ──────────────────────────────────── */}
-        <div
-          ref={leftRef}
-          className="relative lg:w-[44%] w-full overflow-hidden"
-          style={{ minHeight: '420px' }}
-        >
-          <video
-            ref={videoRef}
-            src="/images/video.mp4"
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ pointerEvents: 'none', userSelect: 'none' }}
-          />
+        /* HERO */
+        .hero { display:grid; grid-template-columns:1fr 1fr; height:calc(100vh - 76px); }
 
-          {/* Vignette overlay */}
-          <div className="ab-video-vignette" />
+        /* LEFT */
+        .left { display:flex; flex-direction:column; justify-content:center; padding:0 48px 60px 44px; }
 
-          {/* Film-label badge */}
-          <div
-            ref={badgeRef}
-            className="ab-film-badge"
-          >
-            <span className="ab-film-badge__dot" />
-            <span className="ab-film-badge__text">ABOUT / 01</span>
-          </div>
+        /* HEADLINE */
+        h1.hd {
+          font-family:'DM Sans',system-ui,sans-serif;
+          font-weight:600;
+          font-size:clamp(50px,6.8vw,80px);
+          line-height:1.12;
+          letter-spacing: -0.070em;
+          color:#1a1a1a;
+          margin:0 0 48px;
+        }
+        .sc { font-family:'Caveat',cursive; font-weight:700; font-size:1.06em; color:#C8563B; }
 
-          {/* Bottom frosted tag */}
-          <div className="ab-glass-tag">
-            <span className="ab-glass-tag__name">Raghav Juneja</span>
-            <span className="ab-glass-tag__role">Backend Engineer</span>
-          </div>
-        </div>
+        /* letter animation */
+        .l {
+          display:inline-block;
+          opacity:0; transform:translateY(22px);
+          transition:opacity .42s cubic-bezier(.22,1,.36,1), transform .42s cubic-bezier(.22,1,.36,1);
+          transition-delay:calc(var(--i,0) * 22ms + 100ms);
+        }
+        .go .l { opacity:1; transform:none; }
 
-        {/* ── RIGHT: Type column ─────────────────────────────────── */}
-        <div
-          ref={rightRef}
-          className="lg:w-[56%] w-full flex flex-col justify-center
-                     px-8 sm:px-12 lg:px-16 xl:px-20
-                     py-16 lg:py-24"
-        >
-          {/* Eyebrow */}
-          <div className="ab-line-reveal mb-6">
-            <div className="ab-clip-inner">
-              <p className="ab-eyebrow">
-                <span className="ab-eyebrow__line" />
-                Who I Am
-              </p>
-            </div>
-          </div>
+        /* CTA */
+        .cta {
+          display:inline-flex; align-items:center; gap:14px;
+          font-family:'Caveat',cursive; font-size:22px; font-weight:700;
+          color:#1a1a1a; text-decoration:none;
+          border:2px solid #1a1a1a; border-radius:100px; padding:12px 32px; width:fit-content;
+          opacity:0; transform:translateY(10px);
+          transition:opacity .45s ease 1.4s, transform .45s ease 1.4s, background .2s, color .2s;
+        }
+        .go .cta { opacity:1; transform:none; }
+        .cta:hover { background:#1a1a1a; color:#F5F1E6; }
+        .cta svg { width:36px; height:15px; transition:transform .2s; }
+        .cta:hover svg { transform:translateX(5px); }
 
-          {/* Headline */}
-          <div className="ab-line-reveal mb-8">
-            <div className="ab-clip-inner">
-              <h2 className="ab-headline">
-                Hi, I'm Raghav —{' '}
-                <ScriptWord className="text-[1.08em]">
-                  low-latency,
-                </ScriptWord>{' '}
-                high-impact{' '}
-                <span className="ab-headline__accent">backend engineer.</span>
-              </h2>
-            </div>
-          </div>
+        /* RIGHT */
+        .right { position:relative; overflow:hidden; ; opacity:0; transition:opacity 1s ease .1s; }
+        .go .right { opacity:1; }
+        .right video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; }
+        .vignette { position:absolute; inset:0; z-index:1; pointer-events:none; background: linear-gradient(to left, transparent 48%, #F5F1E6 100%), linear-gradient(to top, rgba(0,0,0,.5) 0%, transparent 42%); }
 
-          {/* Para 1 */}
-          <div className="ab-line-reveal">
-            <div className="ab-clip-inner">
-              <p className="ab-body">
-                Over the last 3+ years I've architected cloud-native services
-                that handle millions of requests, built event-driven pipelines
-                on top of Kafka and Redis, and shipped resilient APIs used in
-                production at Lexipitch and beyond.
-              </p>
-            </div>
-          </div>
+        .badge { position:absolute; top:24px; right:24px; z-index:5; display:flex; align-items:center; gap:8px; background:rgba(18,18,18,.72); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.12); border-radius:100px; padding:6px 16px 6px 12px; }
+        .badge__dot { width:6px; height:6px; border-radius:50%; background:#C8563B; animation:pulse 2.2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(200,86,59,.5)} 50%{box-shadow:0 0 0 5px rgba(200,86,59,0)} }
+        .badge__text { font-size:9px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.8); }
 
-          {/* Para 2 */}
-          <div className="ab-line-reveal mt-5">
-            <div className="ab-clip-inner">
-              <p className="ab-body">
-                I care deeply about system reliability, developer experience,
-                and clean abstractions — turning hairy distributed-systems
-                problems into elegant, maintainable solutions at scale.
-              </p>
-            </div>
-          </div>
+        .glass { position:absolute; bottom:28px; left:24px; z-index:5; display:flex; flex-direction:column; gap:3px; background:rgba(245,241,230,.13); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.16); border-radius:12px; padding:10px 20px; }
+        .glass__name { font-size:16px; font-weight:800; color:#fff; letter-spacing:-0.01em; }
+        .glass__role { font-size:10px; font-weight:500; letter-spacing:.10em; text-transform:uppercase; color:rgba(255,255,255,.5); }
 
-          {/* Stats row */}
-          <div ref={statsRef} className="ab-stats mt-10">
-            {STATS.map(({ value, label }) => (
-              <div key={label} className="ab-stat">
-                <span className="ab-stat__value">{value}</span>
-                <span className="ab-stat__label">{label}</span>
+        /* SHAPES */
+        .shapes { position:absolute; inset:0; pointer-events:none; z-index:10; overflow:visible; }
+        .shape { position:absolute; opacity:0; transform:scale(.4) rotate(var(--r,0deg)); transition:opacity .65s ease, transform .65s cubic-bezier(.34,1.56,.64,1); transition-delay:var(--d,1s); }
+        .go .shape { opacity:1; transform:scale(1) rotate(var(--r,0deg)); }
+
+        /* TICKER */
+        @keyframes tkr { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+        .ticker { overflow:hidden; height:38px; display:flex; align-items:center; background:#C8563B; }
+        .track { display:flex; white-space:nowrap; animation:tkr 30s linear infinite; }
+        .ti { font-size:10px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.88); padding:0 26px; }
+
+        @media (max-width:900px) {
+          .hero { grid-template-columns:1fr; grid-template-rows:auto 50vh; }
+          .left { padding:48px 28px 36px; }
+          .hn__links { display:none; }
+        }
+      `}</style>
+
+      <div className={`hero-root${go ? " go" : ""}`}>
+        <nav className="hn">
+          <a className="hn__logo" href="#">RJ</a>
+        </nav>
+
+        <section className="hero" id="about">
+          {/* LEFT */}
+          <div className="left" style={{ position: "relative" }}>
+            {/* Floating shapes leak from left panel */}
+            <div className="shapes">
+              <div className="shape" style={{ top: "8%", right: "-8%", "--r": "14deg", "--d": "1.0s" }}>
+                <StarBurst color="#C8563B" size={72} />
               </div>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <div className="ab-line-reveal mt-10">
-            <div className="ab-clip-inner">
-              <PillButton href="#experience" script>
-                See my experience
-              </PillButton>
+              <div className="shape" style={{ top: "5%", right: "12%", "--r": "-8deg", "--d": "1.15s" }}>
+                <Flower color="#F4A8B0" size={62} />
+              </div>
             </div>
+
+            <h1 className="hd">
+              <Letters text="Hi, I'm Raghav." offset={0} /><br />
+              <Letters text="I build " offset={15} />
+              <Letters text="low-latency," cls="sc" offset={23} /><br />
+              <Letters text="high-impact " offset={35} />
+              <Letters text="backend" cls="sc" offset={47} /><br />
+              <Letters text="systems." offset={54} />
+            </h1>
+
+            <a className="cta" href="#experience">
+              See my work
+              <svg viewBox="0 0 44 18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 9h38" /><path d="M32 1l9 8-9 8" />
+              </svg>
+            </a>
+          </div>
+
+          {/* RIGHT */}
+          <div className="right">
+            <video ref={videoRef} src="/images/video2.mp4" muted loop playsInline preload="auto" />
+            <div className="vignette" />
+            
+          </div>
+        </section>
+
+        <div className="ticker">
+          <div className="track">
+            {[...TICKER, ...TICKER].map((t, i) => <span key={i} className="ti">{t}</span>)}
           </div>
         </div>
       </div>
-
-      {/* ── Bottom marquee divider ─────────────────────────────── */}
-      <div className="ab-ticker-strip ab-ticker-strip--bottom">
-        <div className="ab-ticker-track ab-ticker-track--reverse">
-          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-            <span key={i} className="ab-ticker-item">
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
-    </section>
+    </>
   );
 }

@@ -331,7 +331,7 @@ export default function HeroSection() {
             {/* Mini stats row */}
             <div className="flex items-center gap-6 mt-8">
               {[
-                ['3+', 'years exp'],
+                ['2+', 'years exp'],
                 ['12+', 'projects'],
                 ['4', 'open-source'],
               ].map(([val, lbl]) => (

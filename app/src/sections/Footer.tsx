@@ -123,8 +123,8 @@ const cards: {
     content: (
       <>
         <p className="ft-label" style={{ color: 'rgba(255,255,255,0.4)' }}>A GLIMPSE OF ME</p>
-        <img src="/images/about-photo.jpg" alt="Raghav" style={{ width: '100%', borderRadius: 8, marginTop: 8, aspectRatio: '4/3', objectFit: 'cover' }} />
-        <p className="ft-sub" style={{ color: 'rgba(255,255,255,0.4)', marginTop: 6 }}>just vibing with code ☕</p>
+        <img src="/images/about-photo.png" alt="Raghav" style={{ width: '100%', borderRadius: 8, marginTop: 8, aspectRatio: '4/3', objectFit: 'cover' }} />
+        <p className="ft-sub" style={{ color: 'rgba(255,255,255,0.4)', marginTop: 6 }}>just vibing </p>
       </>
     ),
   },
@@ -150,7 +150,7 @@ const cards: {
       <>
         <p className="ft-label" style={{ color: '#C8563B' }}>FUN FACT</p>
         <p style={{ fontFamily:"'Cormorant Garamond',Georgia,serif", fontStyle:'italic', fontSize:14, fontWeight:600, color:'#1a1a1a', lineHeight:1.5, marginTop:4 }}>
-          Learning French<br />for fun 🇫🇷
+          i love<br />animals
         </p>
       </>
     ),
