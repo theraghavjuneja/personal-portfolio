@@ -3,10 +3,10 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { ReducedMotionContext, useReducedMotionInit } from '@/hooks/useReducedMotion';
-
+import NewSection from './sections/WorkSection3';
 import GrainOverlay from '@/components/GrainOverlay';
 import Navigation from '@/components/Navigation';
-import HeroSection from '@/sections/HeroSection';
+// import HeroSection from '@/sections/HeroSection';
 import WorkSection from '@/sections/WorkSection';
 import AboutSection from '@/sections/AboutSection';
 import ExperienceSection from '@/sections/ExperienceSection';
@@ -41,7 +41,7 @@ function App() {
         <main>
           <AboutSection />
           <WorkSection />
-          <HeroSection />
+          <NewSection/>
           <ExperienceSection />
           <SpecializingSection />
           <TalksSection />

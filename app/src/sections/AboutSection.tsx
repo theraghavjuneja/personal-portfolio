@@ -1,8 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 
 const TICKER = [
-  "backend engineer","·","cloud infrastructure","·","distributed systems","·",
-  "lexipitch","·","open to work","·","node.js / golang","·","postgresql / redis","·",
+  "backend engineer", "·",
+  "python", "·",
+  "fastapi", "·",
+  "node.js", "·",
+  "golang", "·",
+  "postgresql", "·",
+  "redis", "·",
+  "docker", "·",
+  "terraform", "·",
+  "aws", "·",
+  "gcp", "·",
+  "distributed systems", "·",
 ];
 
 /* Letter-split helper */
@@ -18,33 +28,170 @@ function Letters({ text, cls = "", offset = 0 }) {
   );
 }
 
-function StarBurst({ color, size }) {
+
+const TRACE_SPANS = [
+  { label: "gateway",    start: 0,  w: 9,  dur: "2ms", color: "rgba(238,240,234,.55)" },
+  { label: "auth-svc",   start: 9,  w: 17, dur: "4ms", color: "var(--term-ok)" },
+  { label: "orders-svc", start: 26, w: 39, dur: "9ms", color: "var(--term-ok)" },
+  { label: "postgres",   start: 65, w: 26, dur: "6ms", color: "rgba(238,240,234,.4)" },
+  { label: "cache",      start: 91, w: 9,  dur: "2ms", color: "var(--accent-soft-ink)" },
+];
+
+function TraceCard() {
   return (
-    <svg width={size} height={size} viewBox="0 0 60 60" fill="none">
-      {[0, 45, 90, 135].map((r) => (
-        <line key={r} x1="30" y1="3" x2="30" y2="57"
-          stroke={color} strokeWidth="4.5" strokeLinecap="round"
-          transform={`rotate(${r} 30 30)`} />
-      ))}
-      <circle cx="30" cy="30" r="5" fill={color} />
-    </svg>
+    <div className="trace-wrap">
+      <div className="trace-card">
+        <div className="trace-head">
+          <span className="trace-dot" />
+          <span className="trace-route">GET /v1/orders</span>
+          <span className="trace-total">23ms</span>
+        </div>
+        <div className="trace-sub">trace 8f2a1c1e · 5 spans</div>
+
+        <div className="trace-rows">
+          {TRACE_SPANS.map((s, i) => (
+            <div className="trace-row" key={s.label}>
+              <span className="trace-label">{s.label}</span>
+              <span className="trace-track">
+                <span
+                  className="trace-bar"
+                  style={{
+                    "--start": `${s.start}%`,
+                    "--w": `${s.w}%`,
+                    "--bd": `${i * 0.32}s`,
+                    background: s.color,
+                  }}
+                />
+              </span>
+              <span className="trace-dur">{s.dur}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
-function Flower({ color, size }) {
+/* ---- Deploy console: the right-panel signature element ---- */
+
+const SCRIPT = [
+  { cmd: "git push origin main" },
+  { out: "✓ pre-commit passed · 3 files changed", tone: "ok" },
+  { cmd: "docker build -t api-gateway:2.4.1 ." },
+  { out: "✓ built in 8.2s · 12 layers cached", tone: "ok" },
+  { cmd: "kubectl apply -f deploy/prod.yaml" },
+  { out: "deployment.apps/api-gateway configured", tone: "muted" },
+  { cmd: "kubectl rollout status deploy/api-gateway" },
+  { out: "✓ 3/3 replicas ready · rollout complete", tone: "ok" },
+  { cmd: "curl -s api.internal/healthz" },
+  { out: '{ "status": "ok", "p99": "11ms", "region": "ap-south-1" }', tone: "info" },
+];
+
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function useDeployScript() {
+  const [revealed, setRevealed] = useState([]);
+  const [typing, setTyping] = useState("");
+
+  useEffect(() => {
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduced) {
+      setRevealed(
+        SCRIPT.map((item) =>
+          item.cmd ? { text: item.cmd, tone: "cmd" } : { text: item.out, tone: item.tone || "muted" }
+        )
+      );
+      return;
+    }
+
+    
+    let active = true;
+
+    async function run() {
+      while (active) {
+        setRevealed([]);
+        setTyping("");
+        for (const item of SCRIPT) {
+          if (!active) return;
+          if (item.cmd) {
+            for (let i = 1; i <= item.cmd.length; i++) {
+              await wait(24);
+              if (!active) return;
+              setTyping(item.cmd.slice(0, i));
+            }
+            await wait(260);
+            if (!active) return;
+            setRevealed((prev) => [...prev, { text: item.cmd, tone: "cmd" }]);
+            setTyping("");
+            await wait(200);
+          } else {
+            setRevealed((prev) => [...prev, { text: item.out, tone: item.tone || "muted" }]);
+            await wait(420);
+          }
+          if (!active) return;
+        }
+        await wait(2600);
+      }
+    }
+    run();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return { revealed, typing };
+}
+
+function DeployConsole() {
+  const { revealed, typing } = useDeployScript();
+
   return (
-    <svg width={size} height={size} viewBox="0 0 60 60" fill={color}>
-      {[0, 90, 180, 270].map((r) => (
-        <ellipse key={r} cx="30" cy="15" rx="12" ry="16"
-          transform={`rotate(${r} 30 30)`} />
-      ))}
-      <circle cx="30" cy="30" r="9" fill={color} />
-    </svg>
+    <div className="console-scene">
+      <div className="term-stack">
+        <div className="term-shadow" />
+        <div className="term-card">
+          <div className="term-bar">
+            <span className="term-dots">
+              <i /><i /><i />
+            </span>
+            <span className="term-path">~/services/api-gateway — zsh</span>
+          </div>
+          <div className="term-body">
+            {revealed.map((l, i) => (
+              <div key={i} className={`term-line term-line--${l.tone}`}>
+                {l.tone === "cmd" ? (
+                  <><span className="term-prompt">❯</span> {l.text}</>
+                ) : (
+                  l.text
+                )}
+              </div>
+            ))}
+            <div className="term-line term-line--cmd term-line--active">
+              <span className="term-prompt">❯</span> {typing}
+              <span className="term-cursor" />
+            </div>
+          </div>
+        </div>
+
+        <div className="term-meta">
+          <span className="term-meta__item">
+            <span className="term-meta__dot" /> prod · ap-south-1
+          </span>
+          <span className="term-meta__item">
+            <span className="term-meta__dot" /> auto-scaled · 3 replicas
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }
 
 export default function HeroSection() {
-  const videoRef = useRef(null);
   const [go, setGo] = useState(false);
 
   useEffect(() => {
@@ -52,149 +199,324 @@ export default function HeroSection() {
     return () => clearTimeout(t);
   }, []);
 
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = true; v.loop = true; v.playsInline = true;
-    v.play().catch(() => {});
-  }, []);
-
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,800&family=Caveat:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #F5F1E6; overflow-x: hidden; }
 
-        .hero-root { font-family: 'Inter', system-ui, sans-serif; background: #F5F1E6; }
+        .hero-root {
+          --bg: #EEF0EA;
+          --ink: #10141A;
+          --ink-60: rgba(16,20,26,.6);
+          --ink-40: rgba(16,20,26,.4);
+          --line: rgba(16,20,26,.14);
+          --accent: #0E7C79;
+          --accent-ink: #063C3B;
+          --accent-soft: #CFE7E3;
+          --accent-soft-ink: #63B6AE;
+          --slate: #6B7280;
+          --term-ok: #7FE3D6;
 
-        /* NAV */
-        .hn { display:flex; align-items:center; justify-content:space-between; padding:20px 44px; }
-        .hn__logo { width:36px; height:36px; border-radius:50%; border:2px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#1a1a1a; text-decoration:none; }
-        .hn__links { display:flex; gap:36px; list-style:none; }
-        .hn__links a { font-size:13px; font-weight:800; color:#1a1a1a; text-decoration:none; opacity:.5; transition:opacity .18s; }
-        .hn__links a:hover { opacity:1; }
-
-        /* HERO */
-        .hero { display:grid; grid-template-columns:1fr 1fr; height:calc(100vh - 76px); }
-
-        /* LEFT */
-        .left { display:flex; flex-direction:column; justify-content:center; padding:0 48px 60px 44px; }
-
-        /* HEADLINE */
-        h1.hd {
-          font-family:'DM Sans',system-ui,sans-serif;
-          font-weight:600;
-          font-size:clamp(50px,6.8vw,80px);
-          line-height:1.12;
-          letter-spacing: -0.070em;
-          color:#1a1a1a;
-          margin:0 0 48px;
+          font-family:'IBM Plex Sans', system-ui, sans-serif;
+          background: var(--bg);
+          color: var(--ink);
+          overflow-x: hidden;
+          position: relative;
         }
-        .sc { font-family:'Caveat',cursive; font-weight:700; font-size:1.06em; color:#C8563B; }
 
-        /* letter animation */
+        .crop { position:absolute; width:18px; height:18px; z-index:20; pointer-events:none; opacity:0; transition:opacity .6s ease .3s; }
+        .go .crop { opacity:.35; }
+        .crop::before, .crop::after { content:''; position:absolute; background:var(--ink); }
+        .crop::before { width:100%; height:1px; top:0; left:0; }
+        .crop::after { width:1px; height:100%; top:0; left:0; }
+        .crop--tl { top:14px; left:14px; }
+        .crop--br { bottom:14px; right:14px; transform:rotate(180deg); }
+
+        .hn { display:flex; align-items:center; justify-content:space-between; padding:22px 44px; position:relative; z-index:5; }
+        .hn__logo {
+          font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:13px;
+          letter-spacing:.02em; color:var(--ink); text-decoration:none;
+          border:1.5px solid var(--ink); border-radius:5px; padding:5px 10px;
+        }
+        .hn__status { display:flex; align-items:center; gap:8px; }
+        .hn__dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+        .hn__status span { font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-60); }
+
+        .hero { display:grid; grid-template-columns:1fr 1fr; height:calc(100vh - 76px); position:relative; }
+
+        .left {
+          display:flex; flex-direction:column; justify-content:center;
+          padding:0 48px 60px 44px; position:relative;
+          background-image:
+            linear-gradient(var(--line) 1px, transparent 1px),
+            linear-gradient(90deg, var(--line) 1px, transparent 1px);
+          background-size: 42px 42px;
+          background-position: -1px -1px;
+        }
+        .left__inner { position:relative; z-index:2; }
+
+        h1.hd {
+          font-family:'Space Grotesk', system-ui, sans-serif;
+          font-weight:600;
+          font-size:clamp(46px,6.2vw,74px);
+          line-height:1.2;
+          letter-spacing:-0.02em;
+          color:var(--ink);
+          margin:0 0 40px;
+        }
+        .hl {
+          background:var(--accent-soft);
+          color:var(--accent-ink);
+          border-radius:5px;
+          padding:0 8px;
+          box-decoration-break:clone;
+          -webkit-box-decoration-break:clone;
+        }
+
         .l {
           display:inline-block;
-          opacity:0; transform:translateY(22px);
-          transition:opacity .42s cubic-bezier(.22,1,.36,1), transform .42s cubic-bezier(.22,1,.36,1);
-          transition-delay:calc(var(--i,0) * 22ms + 100ms);
+          opacity:0; transform:translateY(18px);
+          transition:opacity .4s cubic-bezier(.22,1,.36,1), transform .4s cubic-bezier(.22,1,.36,1);
+          transition-delay:calc(var(--i,0) * 18ms + 80ms);
         }
         .go .l { opacity:1; transform:none; }
 
-        /* CTA */
         .cta {
-          display:inline-flex; align-items:center; gap:14px;
-          font-family:'Caveat',cursive; font-size:22px; font-weight:700;
-          color:#1a1a1a; text-decoration:none;
-          border:2px solid #1a1a1a; border-radius:100px; padding:12px 32px; width:fit-content;
+          display:inline-flex; align-items:center; gap:12px;
+          font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600;
+          letter-spacing:.08em; text-transform:uppercase;
+          color:var(--ink); text-decoration:none;
+          border:1.5px solid var(--ink); border-radius:7px; padding:13px 20px 13px 16px; width:fit-content;
           opacity:0; transform:translateY(10px);
-          transition:opacity .45s ease 1.4s, transform .45s ease 1.4s, background .2s, color .2s;
+          transition:opacity .45s ease 1.2s, transform .45s ease 1.2s, background .18s, color .18s, border-color .18s;
         }
         .go .cta { opacity:1; transform:none; }
-        .cta:hover { background:#1a1a1a; color:#F5F1E6; }
-        .cta svg { width:36px; height:15px; transition:transform .2s; }
-        .cta:hover svg { transform:translateX(5px); }
+        .cta__dot { width:6px; height:6px; border-radius:50%; background:var(--accent); flex:none; transition:background .18s; }
+        .cta:hover { background:var(--ink); color:var(--bg); }
+        .cta:hover .cta__dot { background:var(--accent-soft); }
+        .cta svg { width:30px; height:13px; transition:transform .18s; }
+        .cta:hover svg { transform:translateX(4px); }
 
-        /* RIGHT */
-        .right { position:relative; overflow:hidden; ; opacity:0; transition:opacity 1s ease .1s; }
+        /* ---- Trace waterfall signature element (left panel) ---- */
+        .trace-wrap {
+          position:absolute; top:9%; right:2%; z-index:1;
+          opacity:0; transform:scale(.94) rotate(1deg);
+          transition:opacity .7s ease .5s, transform .7s cubic-bezier(.22,1,.36,1) .5s;
+        }
+        .go .trace-wrap { opacity:1; transform:scale(1) rotate(1deg); }
+
+        .trace-card {
+          width:302px;
+          background:#0C1116;
+          border:1px solid rgba(238,240,234,.08);
+          border-radius:12px;
+          padding:16px 17px 14px;
+          box-shadow:0 20px 40px -18px rgba(16,20,26,.5);
+        }
+        .trace-head { display:flex; align-items:center; gap:8px; }
+        .trace-dot { width:6px; height:6px; border-radius:50%; background:var(--term-ok); flex:none; animation:blip 2.2s ease-in-out infinite; }
+        .trace-route { font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; color:rgba(238,240,234,.92); }
+        .trace-total { margin-left:auto; font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; color:#0C1116; background:var(--term-ok); border-radius:5px; padding:2px 7px; }
+        .trace-sub { margin-top:3px; font-family:'IBM Plex Mono', monospace; font-size:10px; color:rgba(238,240,234,.38); letter-spacing:.02em; }
+
+        .trace-rows { margin-top:13px; display:flex; flex-direction:column; gap:8px; }
+        .trace-row { display:grid; grid-template-columns:64px 1fr 28px; align-items:center; gap:9px; }
+        .trace-label { font-family:'IBM Plex Mono', monospace; font-size:10px; color:rgba(238,240,234,.55); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .trace-track { position:relative; height:6px; border-radius:3px; background:rgba(238,240,234,.1); overflow:hidden; }
+        .trace-bar {
+          position:absolute; top:0; left:var(--start); height:100%; border-radius:3px;
+          width:0; opacity:.4;
+          animation:barsweep 4.2s cubic-bezier(.4,0,.2,1) infinite;
+          animation-delay:var(--bd);
+        }
+        .trace-dur { font-family:'IBM Plex Mono', monospace; font-size:10px; color:rgba(238,240,234,.38); text-align:right; }
+
+        @keyframes barsweep {
+          0%   { width:0; opacity:.3; }
+          16%  { width:var(--w); opacity:1; }
+          72%  { width:var(--w); opacity:1; }
+          90%  { width:0; opacity:.25; }
+          100% { width:0; opacity:.25; }
+        }
+
+        /* RIGHT SECTION */
+        .right {
+          position:relative;
+          overflow:hidden;
+          opacity:0;
+          transition:opacity 1s ease .1s;
+          background-image:
+            linear-gradient(var(--line) 1px, transparent 1px),
+            linear-gradient(90deg, var(--line) 1px, transparent 1px);
+          background-size: 42px 42px;
+          background-position: -1px -1px;
+        }
         .go .right { opacity:1; }
-        .right video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; }
-        .vignette { position:absolute; inset:0; z-index:1; pointer-events:none; background: linear-gradient(to left, transparent 48%, #F5F1E6 100%), linear-gradient(to top, rgba(0,0,0,.5) 0%, transparent 42%); }
 
-        .badge { position:absolute; top:24px; right:24px; z-index:5; display:flex; align-items:center; gap:8px; background:rgba(18,18,18,.72); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.12); border-radius:100px; padding:6px 16px 6px 12px; }
-        .badge__dot { width:6px; height:6px; border-radius:50%; background:#C8563B; animation:pulse 2.2s ease-in-out infinite; }
-        @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(200,86,59,.5)} 50%{box-shadow:0 0 0 5px rgba(200,86,59,0)} }
-        .badge__text { font-size:9px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.8); }
+        /* ---- Deploy console signature element ---- */
+        .console-scene { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:40px; }
 
-        .glass { position:absolute; bottom:28px; left:24px; z-index:5; display:flex; flex-direction:column; gap:3px; background:rgba(245,241,230,.13); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.16); border-radius:12px; padding:10px 20px; }
-        .glass__name { font-size:16px; font-weight:800; color:#fff; letter-spacing:-0.01em; }
-        .glass__role { font-size:10px; font-weight:500; letter-spacing:.10em; text-transform:uppercase; color:rgba(255,255,255,.5); }
+        .term-stack {
+          position:relative; z-index:1; width:min(430px, 88%);
+          display:flex; flex-direction:column; align-items:center; gap:14px;
+          opacity:0; translate: 0 10px;
+          transition: opacity .7s ease .55s, transform .7s cubic-bezier(.22,1,.36,1) .55s;
+        }
+        .go .term-stack { opacity:1; translate: 0 0; }
 
-        /* SHAPES */
-        .shapes { position:absolute; inset:0; pointer-events:none; z-index:10; overflow:visible; }
-        .shape { position:absolute; opacity:0; transform:scale(.4) rotate(var(--r,0deg)); transition:opacity .65s ease, transform .65s cubic-bezier(.34,1.56,.64,1); transition-delay:var(--d,1s); }
-        .go .shape { opacity:1; transform:scale(1) rotate(var(--r,0deg)); }
+        .term-shadow {
+          position:absolute; top:0; left:0; right:0; height:calc(100% - 40px);
+          background: var(--accent-soft);
+          border-radius:12px;
+          transform: rotate(-1.1deg) translate(9px,10px);
+          z-index:0;
+        }
 
-        /* TICKER */
+        .term-card {
+          position:relative; z-index:1; width:100%;
+          transform: rotate(-1.1deg);
+          background:#0C1116;
+          border:1px solid rgba(238,240,234,.08);
+          border-radius:12px;
+          overflow:hidden;
+          box-shadow: 0 22px 44px -18px rgba(16,20,26,.5);
+        }
+
+        .term-bar {
+          display:flex; align-items:center; gap:10px;
+          padding:11px 14px;
+          border-bottom:1px solid rgba(238,240,234,.08);
+        }
+        .term-dots { display:flex; gap:5px; }
+        .term-dots i { width:6px; height:6px; border-radius:50%; background:rgba(238,240,234,.28); display:block; }
+        .term-path {
+          font-family:'IBM Plex Mono', monospace; font-size:10.5px; font-weight:500;
+          color:rgba(238,240,234,.4); letter-spacing:.02em;
+        }
+
+        .term-body {
+          padding:16px 16px 18px;
+          min-height:216px;
+          font-family:'IBM Plex Mono', monospace; font-size:12.2px; line-height:1.85;
+        }
+        .term-line { white-space:pre-wrap; word-break:break-word; }
+        .term-line--cmd { color:rgba(238,240,234,.92); }
+        .term-line--ok { color:var(--term-ok); padding-left:18px; }
+        .term-line--muted { color:rgba(238,240,234,.42); padding-left:18px; }
+        .term-line--info { color:rgba(238,240,234,.7); padding-left:18px; }
+        .term-prompt { color:var(--term-ok); margin-right:2px; }
+        .term-line--active { color:rgba(238,240,234,.92); }
+
+        .term-cursor {
+          display:inline-block; width:6px; height:13px; margin-left:2px;
+          background:var(--term-ok); vertical-align:-2px;
+          animation:blink 1s steps(1) infinite;
+        }
+        @keyframes blink { 50% { opacity:0; } }
+
+        .term-meta { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center; }
+        .term-meta__item {
+          display:flex; align-items:center; gap:6px;
+          font-family:'IBM Plex Mono', monospace; font-size:9.5px; font-weight:600;
+          letter-spacing:.1em; text-transform:uppercase; color:var(--ink-60);
+          background:rgba(255,255,255,.55); border:1px solid rgba(16,20,26,.1);
+          border-radius:20px; padding:5px 11px 5px 9px;
+        }
+        .term-meta__dot { width:5px; height:5px; border-radius:50%; background:var(--accent); flex:none; }
+
+        /* Light-theme frosted glass to keep elements readable */
+        .badge { position:absolute; top:24px; right:24px; z-index:5; display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.6); backdrop-filter:blur(10px); border:1px solid rgba(16,20,26,.1); border-radius:7px; padding:7px 14px 7px 11px; opacity:0; transform:translateY(-6px); transition:opacity .5s ease 1s, transform .5s ease 1s; }
+        .go .badge { opacity:1; transform:none; }
+        .badge__dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blip 2.2s ease-in-out infinite; flex:none; }
+        @keyframes blip { 0%,100%{box-shadow:0 0 0 0 rgba(14,124,121,.55)} 50%{box-shadow:0 0 0 5px rgba(14,124,121,0)} }
+        .badge__text { font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-60); }
+
+        .glass { position:absolute; bottom:26px; left:24px; z-index:5; display:flex; flex-direction:column; gap:3px; background:rgba(255,255,255,.5); backdrop-filter:blur(14px); border:1px solid rgba(16,20,26,.1); border-radius:8px; padding:11px 18px; opacity:0; transform:translateY(6px); transition:opacity .5s ease 1.1s, transform .5s ease 1.1s; }
+        .go .glass { opacity:1; transform:none; }
+        .glass__name { font-family:'Space Grotesk', sans-serif; font-size:15px; font-weight:600; color:var(--ink); letter-spacing:-.01em; }
+        .glass__role { font-family:'IBM Plex Mono', monospace; font-size:9.5px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-60); }
+
         @keyframes tkr { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-        .ticker { overflow:hidden; height:38px; display:flex; align-items:center; background:#C8563B; }
-        .track { display:flex; white-space:nowrap; animation:tkr 30s linear infinite; }
-        .ti { font-size:10px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.88); padding:0 26px; }
+        .ticker { overflow:hidden; height:38px; display:flex; align-items:center; background:var(--ink); }
+        .track { display:flex; white-space:nowrap; animation:tkr 32s linear infinite; }
+        .ti { font-family:'IBM Plex Mono', monospace; font-size:10.5px; font-weight:500; letter-spacing:.08em; color:rgba(238,240,234,.82); padding:0 22px; }
+        .ti--sep { color:var(--accent); }
 
         @media (max-width:900px) {
-          .hero { grid-template-columns:1fr; grid-template-rows:auto 50vh; }
-          .left { padding:48px 28px 36px; }
-          .hn__links { display:none; }
+          .hero { grid-template-columns:1fr; grid-template-rows:auto 46vh; height:auto; }
+          .left { padding:44px 26px 34px; background-size:32px 32px; }
+          .trace-wrap { display:none; }
+          .term-meta { display:none; }
+          .term-body { font-size:11px; min-height:180px; }
+          h1.hd { font-size:clamp(38px,10vw,54px); margin-bottom:28px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .l, .cta, .right, .badge, .glass, .trace-wrap, .crop, .term-stack { transition:none !important; opacity:1 !important; transform:none !important; translate:none !important; }
+          .badge__dot, .trace-dot, .trace-bar, .term-cursor { animation:none !important; }
+          .trace-bar { width:var(--w) !important; opacity:1 !important; }
+          .term-cursor { opacity:0; }
+          .track { animation-duration:60s; }
         }
       `}</style>
 
       <div className={`hero-root${go ? " go" : ""}`}>
+        <span className="crop crop--tl" />
+        <span className="crop crop--br" />
+
         <nav className="hn">
-          <a className="hn__logo" href="#">RJ</a>
+          <a className="hn__logo" href="#">[RJ]</a>
+          <div className="hn__status">
+            <span className="hn__dot" />
+            
+          </div>
         </nav>
 
         <section className="hero" id="about">
           {/* LEFT */}
-          <div className="left" style={{ position: "relative" }}>
-            {/* Floating shapes leak from left panel */}
-            <div className="shapes">
-              <div className="shape" style={{ top: "8%", right: "-8%", "--r": "14deg", "--d": "1.0s" }}>
-                <StarBurst color="#C8563B" size={72} />
-              </div>
-              <div className="shape" style={{ top: "5%", right: "12%", "--r": "-8deg", "--d": "1.15s" }}>
-                <Flower color="#F4A8B0" size={62} />
-              </div>
+          <div className="left">
+            <TraceCard />
+
+            <div className="left__inner">
+              <h1 className="hd">
+                <Letters text="Hi, I'm Raghav." offset={0} /><br />
+                <Letters text="I build " offset={15} />
+                <Letters text="low-latency," cls="hl" offset={23} /><br />
+                <Letters text="high-impact " offset={35} />
+                <Letters text="backend" cls="hl" offset={47} /><br />
+                <Letters text="systems." offset={54} />
+              </h1>
+
+              <a className="cta" href="#experience">
+                <span className="cta__dot" />
+                See my work
+                <svg viewBox="0 0 44 18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2 9h38" /><path d="M32 1l9 8-9 8" />
+                </svg>
+              </a>
             </div>
-
-            <h1 className="hd">
-              <Letters text="Hi, I'm Raghav." offset={0} /><br />
-              <Letters text="I build " offset={15} />
-              <Letters text="low-latency," cls="sc" offset={23} /><br />
-              <Letters text="high-impact " offset={35} />
-              <Letters text="backend" cls="sc" offset={47} /><br />
-              <Letters text="systems." offset={54} />
-            </h1>
-
-            <a className="cta" href="#experience">
-              See my work
-              <svg viewBox="0 0 44 18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2 9h38" /><path d="M32 1l9 8-9 8" />
-              </svg>
-            </a>
           </div>
 
           {/* RIGHT */}
           <div className="right">
-            <video ref={videoRef} src="/images/video2.mp4" muted loop playsInline preload="auto" />
-            <div className="vignette" />
-            
+            <DeployConsole />
+            <div className="badge">
+              <span className="badge__dot" />
+              {/* <span className="badge__text">Open to work</span> */}
+            </div>
+            <div className="glass">
+              <span className="glass__name">Raghav</span>
+              <span className="glass__role">Backend Engineer</span>
+            </div>
           </div>
         </section>
 
         <div className="ticker">
           <div className="track">
-            {[...TICKER, ...TICKER].map((t, i) => <span key={i} className="ti">{t}</span>)}
+            {[...TICKER, ...TICKER].map((t, i) => (
+              <span key={i} className={`ti${t === "·" ? " ti--sep" : ""}`}>{t}</span>
+            ))}
           </div>
         </div>
       </div>
