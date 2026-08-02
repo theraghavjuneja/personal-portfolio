@@ -3,11 +3,9 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { ReducedMotionContext, useReducedMotionInit } from '@/hooks/useReducedMotion';
-import NewSection from './sections/WorkSection3';
+// import NewSection from './sections/WorkSection3';
 import GrainOverlay from '@/components/GrainOverlay';
 import Navigation from '@/components/Navigation';
-// import HeroSection from '@/sections/HeroSection';
-// WorkSection replaced by NewSection (sticky sidebar layout)
 import AboutSection from '@/sections/AboutSection';
 import ExperienceSection from '@/sections/ExperienceSection';
 import SpecializingSection from '@/sections/SpecializingSection';
@@ -15,7 +13,8 @@ import TalksSection from '@/sections/TalksSection';
 import Footer from '@/sections/Footer';
 
 import CustomCursor from '@/components/CustomCursor';
-
+import CaseStudies from './sections/CaseStudies';
+import Summary from './sections/Summary';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
@@ -40,7 +39,8 @@ function App() {
         <Navigation />
         <main>
           <AboutSection />
-          <NewSection />
+          <Summary />
+          <CaseStudies />
           <ExperienceSection />
           <SpecializingSection />
           <TalksSection />

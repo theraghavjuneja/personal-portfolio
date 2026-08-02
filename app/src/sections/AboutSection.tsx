@@ -432,7 +432,7 @@ export default function HeroSection() {
         <section className="hero" id="about">
           {/* LEFT */}
           <div className="left">
-            {/* <TraceCard /> */}
+
 
             <div className="left__inner">
               <h1 className="hd">

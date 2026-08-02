@@ -11,20 +11,20 @@ const CORE_TECH = ['Node.js', 'Go', 'Python', 'PostgreSQL', 'Redis', 'Kafka', 'D
 function ArrowRight() {
   return (
     <svg width="13" height="11" viewBox="0 0 13 11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M1 5.5h10"/><path d="M7 1l4.5 4.5L7 10"/>
+      <path d="M1 5.5h10" /><path d="M7 1l4.5 4.5L7 10" />
     </svg>
   );
 }
 function GithubIcon() {
-  return <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>;
+  return <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" /></svg>;
 }
 function ExternalIcon() {
-  return <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 2H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7"/><path d="M8 1h3v3M11 1 6 6"/></svg>;
+  return <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 2H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7" /><path d="M8 1h3v3M11 1 6 6" /></svg>;
 }
 
-export default function WorkSection() {
+export default function CaseStudies() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const cardRefs   = useRef<(HTMLDivElement | null)[]>([]);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { reducedMotion } = useReducedMotion();
 
   useEffect(() => {
@@ -60,9 +60,7 @@ export default function WorkSection() {
         .ws-layout {
           display: flex;
           align-items: flex-start;
-          max-width: 1320px;
-          margin: 0 auto;
-          padding: 0 40px;
+          width: 100%;
           min-height: 100vh;
         }
 
@@ -70,14 +68,18 @@ export default function WorkSection() {
         .ws-aside {
           position: sticky;
           top: 0;
-          width: 300px;
+          width: 420px;
           height: 100vh;
           flex-shrink: 0;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          padding: 48px 36px 0 0;
-          border-right: 1px solid rgba(16,20,26,.1);
+          padding: 48px 28px 0 32px;
+          background: rgba(255,255,255,0.52);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-right: 1px solid rgba(16,20,26,.13);
+          box-shadow: 4px 0 24px -8px rgba(16,20,26,.07);
         }
         .ws-aside__top { display: flex; flex-direction: column; gap: 0; }
         .ws-aside__name-row {
@@ -96,11 +98,11 @@ export default function WorkSection() {
         }
         .ws-aside__headline {
           font-family: 'Space Grotesk', system-ui, sans-serif;
-          font-size: clamp(26px, 2.6vw, 36px);
+          font-size: clamp(34px, 3.2vw, 52px);
           font-weight: 800;
           color: #10141A;
-          letter-spacing: -0.04em;
-          line-height: 1.15;
+          letter-spacing: -0.045em;
+          line-height: 1.1;
           margin: 0 0 20px;
         }
         .ws-aside__hl {
@@ -172,7 +174,7 @@ export default function WorkSection() {
         /* ── Right scroll column ── */
         .ws-cards {
           flex: 1; min-width: 0;
-          padding: 48px 0 80px 40px;
+          padding: 48px 40px 80px 40px;
           display: flex; flex-direction: column; gap: 24px;
         }
 
@@ -338,13 +340,13 @@ export default function WorkSection() {
                 <div className="ws-card__img-wrap">
                   {p.image
                     ? <img src={p.image} alt={p.title} className="ws-img" />
-                    : <div style={{ width:'100%', height:'100%', background:'linear-gradient(135deg,#0C1116,#1a2232)' }} />
+                    : <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg,#0C1116,#1a2232)' }} />
                   }
                   <div className="ws-card__num">
                     {String(i + 1).padStart(2, '0')} / {String(PROJECTS.length).padStart(2, '0')}
                   </div>
                   <div className="ws-vf">
-                    <span/><span/><span/><span/>
+                    <span /><span /><span /><span />
                   </div>
                 </div>
 
