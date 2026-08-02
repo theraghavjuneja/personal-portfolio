@@ -13,7 +13,7 @@ const navLinks = [
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState('');
-  const { reducedMotion, setReducedMotion } = useReducedMotion();
+  const { reducedMotion } = useReducedMotion();
   const navRef = useRef<HTMLElement>(null);
   const location = useLocation();
   const navigate = useNavigate();

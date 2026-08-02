@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+
+type RevealedItem = { text: string; tone: string };
 
 const TICKER = [
   "backend engineer", "·",
@@ -16,11 +18,11 @@ const TICKER = [
 ];
 
 /* Letter-split helper */
-function Letters({ text, cls = "", offset = 0 }) {
+function Letters({ text, cls = "", offset = 0 }: { text: string; cls?: string; offset?: number }) {
   return (
     <span className={cls}>
-      {text.split("").map((ch, i) => (
-        <span key={i} className="l" style={{ "--i": offset + i }}>
+      {text.split("").map((ch: string, i: number) => (
+        <span key={i} className="l" style={{ "--i": offset + i } as any}>
           {ch === " " ? "\u00A0" : ch}
         </span>
       ))}
@@ -47,10 +49,10 @@ const SCRIPT = [
   { out: '{ "status": "ok", "p99": "11ms", "region": "ap-south-1" }', tone: "info" },
 ];
 
-const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function useDeployScript() {
-  const [revealed, setRevealed] = useState([]);
+  const [revealed, setRevealed] = useState<RevealedItem[]>([]);
   const [typing, setTyping] = useState("");
 
   useEffect(() => {
@@ -62,7 +64,7 @@ function useDeployScript() {
     if (reduced) {
       setRevealed(
         SCRIPT.map((item) =>
-          item.cmd ? { text: item.cmd, tone: "cmd" } : { text: item.out, tone: item.tone || "muted" }
+          item.cmd ? { text: item.cmd as string, tone: "cmd" } : { text: item.out as string, tone: item.tone || "muted" }
         )
       );
       return;
@@ -85,11 +87,11 @@ function useDeployScript() {
             }
             await wait(260);
             if (!active) return;
-            setRevealed((prev) => [...prev, { text: item.cmd, tone: "cmd" }]);
+            setRevealed((prev) => [...prev, { text: item.cmd as string, tone: "cmd" }]);
             setTyping("");
             await wait(200);
           } else {
-            setRevealed((prev) => [...prev, { text: item.out, tone: item.tone || "muted" }]);
+            setRevealed((prev) => [...prev, { text: item.out as string, tone: item.tone || "muted" }]);
             await wait(420);
           }
           if (!active) return;

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 export default function CaseStudyFooter() {
