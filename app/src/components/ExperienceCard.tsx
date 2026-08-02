@@ -18,32 +18,35 @@ export default function ExperienceCard({
     <div
       style={{
         background: '#FAFAF7',
-        border: '1px solid rgba(16,20,26,.12)',
-        borderRadius: 12,
+        border: '3px solid #10141A',
+        borderRadius: 16,
         padding: '32px 28px 28px',
         position: 'relative',
-        transition: 'transform .35s cubic-bezier(.23,1,.32,1), box-shadow .35s ease',
-        boxShadow: '0 2px 16px -8px rgba(16,20,26,.18)',
+        transition: 'transform .2s, box-shadow .2s',
+        boxShadow: '6px 6px 0px #10141A',
       }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)';
-        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 16px 40px -12px rgba(16,20,26,.22), 0 4px 16px -6px rgba(14,124,121,.15)';
+        (e.currentTarget as HTMLDivElement).style.transform = 'translate(-4px, -4px)';
+        (e.currentTarget as HTMLDivElement).style.boxShadow = '10px 10px 0px #10141A';
       }}
       onMouseLeave={e => {
         (e.currentTarget as HTMLDivElement).style.transform = '';
-        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 16px -8px rgba(16,20,26,.18)';
+        (e.currentTarget as HTMLDivElement).style.boxShadow = '6px 6px 0px #10141A';
       }}
     >
       {/* Date ribbon */}
       <div
         style={{
           position: 'absolute',
-          top: -1,
+          top: -3,
           left: 24,
-          background: '#10141A',
-          color: 'rgba(238,240,234,.82)',
+          background: '#FAFAF7',
+          color: '#10141A',
+          border: '3px solid #10141A',
+          borderTop: 'none',
+          boxShadow: '4px 4px 0px #10141A',
           padding: '5px 14px',
-          borderRadius: '0 0 6px 6px',
+          borderRadius: '0 0 8px 8px',
           fontFamily: "'IBM Plex Mono', monospace",
           fontSize: 10,
           fontWeight: 600,
@@ -120,9 +123,10 @@ export default function ExperienceCard({
             fontWeight: 700,
             letterSpacing: '0.1em',
             textTransform: 'uppercase' as const,
-            color: '#0E7C79',
+            color: '#10141A',
             background: '#CFE7E3',
-            border: '1px solid rgba(14,124,121,.25)',
+            border: '2px solid #10141A',
+            boxShadow: '2px 2px 0px #10141A',
             borderRadius: 20,
             padding: '4px 12px',
           }}

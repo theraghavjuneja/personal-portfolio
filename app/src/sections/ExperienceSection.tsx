@@ -191,8 +191,8 @@ export default function ExperienceSection() {
           style={{
             marginTop: 8,
             width: 48,
-            height: 2,
-            background: 'rgba(14,124,121,.35)',
+            height: 4,
+            background: '#10141A',
             borderRadius: 2,
           }}
         />

@@ -43,7 +43,7 @@ function StarRating() {
           <button key={n} onClick={() => { setRating(n); setSubmitted(true); }}
             onMouseEnter={() => setHovered(n)} onMouseLeave={() => setHovered(0)}
             style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 22, lineHeight: 1,
-              color: n <= (hovered || rating) ? '#0E7C79' : 'rgba(16,20,26,.18)', transition: 'color 0.15s, transform 0.15s',
+              color: n <= (hovered || rating) ? '#10141A' : 'rgba(16,20,26,.18)', transition: 'color 0.15s, transform 0.15s',
               transform: n <= hovered ? 'scale(1.25)' : 'scale(1)' }}>★</button>
         ))}
       </div>
@@ -84,7 +84,7 @@ const cards: {
     id: 'rating',
     w: 168,
     pos: { top: '3%', left: '48%', transform: 'rotate(-2deg)' },
-    accent: 'rgba(14,124,121,.08)',
+    accent: '#CFE7E3',
     content: <StarRating />,
   },
   {
@@ -105,7 +105,7 @@ const cards: {
     id: 'role',
     w: 175,
     pos: { top: '4%', right: '2%', transform: 'rotate(-3deg)' },
-    accent: 'rgba(14,124,121,.07)',
+    accent: '#FFE2D1',
     content: (
       <>
         <div className="ft-avail-row"><div className="ft-avail-dot" /><span style={{ fontFamily:"'IBM Plex Mono'", fontSize:9, fontWeight:700, color:'#0E7C79', letterSpacing:'0.10em', textTransform:'uppercase' as const }}>Available Now</span></div>
@@ -144,7 +144,7 @@ const cards: {
     id: 'fun',
     w: 162,
     pos: { top: '55%', left: '3%', transform: 'rotate(3deg)' },
-    accent: 'rgba(127,227,214,.12)',
+    accent: '#CFE7E3',
     content: (
       <>
         <p className="ft-label" style={{ color: '#0E7C79' }}>FUN FACT</p>
@@ -179,7 +179,7 @@ const cards: {
     id: 'resume',
     w: 140,
     pos: { top: '40%', right: '3%', transform: 'rotate(4deg)' },
-    accent: 'rgba(14,124,121,.07)',
+    accent: '#FFE2D1',
     content: (
       <div style={{ textAlign: 'center' }}>
         <p className="ft-label">CV</p>
@@ -222,7 +222,7 @@ const cards: {
     id: 'quote',
     w: 200,
     pos: { bottom: '12%', left: '24%', transform: 'rotate(2deg)' },
-    accent: 'rgba(14,124,121,.06)',
+    accent: '#CFE7E3',
     content: (
       <>
         <p className="ft-label" style={{ color: '#0E7C79' }}>MOTTO</p>
@@ -319,35 +319,37 @@ export default function Footer() {
         .ft-heading .accent {
           font-style: italic;
           font-weight: 700;
-          color: #0E7C79;
+          color: #10141A;
           letter-spacing: 0;
           font-size: 1.08em;
           background: #CFE7E3;
+          border: 3px solid #10141A;
+          box-shadow: 4px 4px 0px #10141A;
           border-radius: 6px;
           padding: 0 10px;
+          display: inline-block;
+          transform: rotate(-2deg);
         }
         .ft-card {
           position: absolute;
           z-index: 10;
-          background: rgba(250,250,247,0.72);
-          backdrop-filter: blur(18px);
-          -webkit-backdrop-filter: blur(18px);
-          border: 1px solid rgba(16,20,26,.1);
+          background: #FAFAF7;
+          border: 3px solid #10141A;
           border-radius: 14px;
           padding: 16px;
-          box-shadow: 0 4px 20px rgba(16,20,26,.08), 0 1px 4px rgba(16,20,26,.05);
+          box-shadow: 6px 6px 0px #10141A;
           transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
           cursor: default;
           will-change: transform;
         }
         .ft-card:hover {
-          transform: translateY(-5px) scale(1.04) !important;
-          box-shadow: 0 16px 48px rgba(16,20,26,.12), 0 4px 12px rgba(14,124,121,.1);
+          transform: translate(-4px, -4px) scale(1.04) !important;
+          box-shadow: 10px 10px 0px #10141A;
           z-index: 25;
         }
         .ft-card--dark {
-          background: rgba(16,20,26,0.92);
-          border-color: rgba(238,240,234,.08);
+          background: #10141A;
+          border-color: #10141A;
         }
         .ft-card--dark:hover { background: rgba(16,20,26,1); }
         .ft-label {
@@ -404,10 +406,11 @@ export default function Footer() {
         .ft-tag {
           font-family: 'IBM Plex Mono', monospace;
           font-size: 9px;
-          font-weight: 600;
-          color: 'rgba(16,20,26,.6)';
-          background: rgba(16,20,26,.05);
-          border: 1px solid rgba(16,20,26,.09);
+          font-weight: 700;
+          color: #10141A;
+          background: #CFE7E3;
+          border: 2px solid #10141A;
+          box-shadow: 2px 2px 0px #10141A;
           border-radius: 20px;
           padding: 3px 9px;
         }
@@ -425,15 +428,18 @@ export default function Footer() {
         }
         .ft-link:hover { color: #0E7C79; }
         .ft-link-icon {
-          width: 22px; height: 22px;
+          width: 24px; height: 24px;
           border-radius: 5px;
           display: flex; align-items: center; justify-content: center;
           font-size: 11px; font-weight: 700;
-          background: rgba(16,20,26,.06);
+          background: #FAFAF7;
+          border: 2px solid #10141A;
+          box-shadow: 2px 2px 0px #10141A;
+          color: #10141A;
           flex-shrink: 0;
-          transition: background 0.2s, color 0.2s;
+          transition: background 0.2s, color 0.2s, transform 0.2s;
         }
-        .ft-link:hover .ft-link-icon { background: #0E7C79; color: #EEF0EA; }
+        .ft-link:hover .ft-link-icon { background: #CFE7E3; transform: translate(-2px, -2px); box-shadow: 4px 4px 0px #10141A; }
         .ft-cta-link { text-decoration: none; display: block; text-align: center; }
         .ft-cta-icon { font-size: 20px; margin: 6px 0 2px; }
         .ft-cta-title {
@@ -492,19 +498,19 @@ export default function Footer() {
       `}</style>
 
       <div className="ft-canvas">
-        {/* Teal glow at bottom */}
+        {/* Circle decoration */}
         <div
           aria-hidden="true"
           style={{
             position: 'absolute',
-            bottom: '-18%',
+            bottom: '-15%',
             left: '50%',
             transform: 'translateX(-50%)',
-            width: '60%',
-            paddingBottom: '30%',
+            width: '40%',
+            paddingBottom: '40%',
             borderRadius: '50%',
-            background: 'radial-gradient(ellipse at 50% 100%, rgba(14,124,121,.09) 0%, transparent 70%)',
-            filter: 'blur(60px)',
+            background: '#CFE7E3',
+            border: '3px solid #10141A',
             pointerEvents: 'none',
             zIndex: 0,
           }}
@@ -527,7 +533,7 @@ export default function Footer() {
               style={{
                 width: card.w,
                 ...card.pos,
-                ...(card.accent ? { background: card.accent, borderColor: 'rgba(14,124,121,.12)' } : {}),
+                ...(card.accent ? { background: card.accent } : {}),
               }}
             >
               {card.content}
@@ -542,7 +548,7 @@ export default function Footer() {
               key={card.id}
               ref={el => { cardsRef.current[i] = el; }}
               className={`ft-card${card.dark ? ' ft-card--dark' : ''}`}
-              style={card.accent ? { background: card.accent, borderColor: 'rgba(14,124,121,.12)' } : {}}
+              style={card.accent ? { background: card.accent } : {}}
             >
               {card.content}
             </div>

@@ -337,18 +337,18 @@
   position: relative;
   z-index: 20;
   overflow: hidden;
-  background: #1E1E1E;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  height: 40px;
+  background: #10141A;
+  border-top: 3px solid #10141A;
+  border-bottom: 3px solid #10141A;
+  height: 48px;
   display: flex;
   align-items: center;
 }
 
 .ab-ticker-strip--bottom {
-  background: #C8563B;
-  border-top: none;
-  border-bottom: none;
+  background: #CFE7E3;
+  border-top: 3px solid #10141A;
+  border-bottom: 3px solid #10141A;
 }
 
 .ab-ticker-track {
@@ -370,12 +370,12 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.72);
+  color: #FAFAF7;
   padding: 0 28px;
 }
 
 .ab-ticker-strip--bottom .ab-ticker-item {
-  color: rgba(255,255,255,0.88);
+  color: #10141A;
 }
 
 /* ── Video panel ────────────────────────────────────────────── */
@@ -398,10 +398,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(30, 30, 30, 0.72);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: #FAFAF7;
+  border: 3px solid #10141A;
+  box-shadow: 4px 4px 0px #10141A;
   border-radius: 100px;
   padding: 6px 14px 6px 10px;
 }
@@ -427,7 +426,7 @@
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.8);
+  color: #10141A;
 }
 
 /* ── Glass name tag (bottom of video) ───────────────────────── */
@@ -439,10 +438,9 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: rgba(250, 248, 244, 0.14);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: #CFE7E3;
+  border: 3px solid #10141A;
+  box-shadow: 4px 4px 0px #10141A;
   border-radius: 12px;
   padding: 10px 18px;
 }
@@ -451,7 +449,7 @@
   font-family: 'DM Sans', system-ui, sans-serif;
   font-size: 15px;
   font-weight: 700;
-  color: #ffffff;
+  color: #10141A;
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
@@ -462,7 +460,7 @@
   font-weight: 500;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.58);
+  color: rgba(16,20,26,0.6);
 }
 
 /* ── Line clip-reveal ───────────────────────────────────────── */
@@ -533,7 +531,7 @@
   gap: 3px;
   padding-right: 28px;
   margin-right: 28px;
-  border-right: 1px solid rgba(30,30,30,0.12);
+  border-right: 3px solid #10141A;
 }
 
 .ab-stat:last-child {

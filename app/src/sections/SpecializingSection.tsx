@@ -142,20 +142,20 @@ export default function SpecializingSection() {
         aria-hidden="true"
         style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(rgba(16,20,26,.1) 1px, transparent 1px)',
-          backgroundSize: '22px 22px',
+          backgroundImage: 'radial-gradient(rgba(16,20,26,.15) 2px, transparent 2px)',
+          backgroundSize: '24px 24px',
           pointerEvents: 'none', zIndex: 0,
         }}
       />
 
-      {/* ── Subtle teal glow ── */}
+      {/* ── Solid colored circle (Open Peeps style) ── */}
       <div
         aria-hidden="true"
         style={{
-          position: 'absolute', top: '-8%', right: '-6%',
-          width: '42%', paddingBottom: '42%', borderRadius: '50%',
-          background: 'radial-gradient(ellipse at 50% 50%, rgba(14,124,121,.07) 0%, transparent 70%)',
-          filter: 'blur(52px)', pointerEvents: 'none', zIndex: 0,
+          position: 'absolute', top: '-10%', right: '-5%',
+          width: '35%', paddingBottom: '35%', borderRadius: '50%',
+          background: '#CFE7E3', border: '3px solid #10141A',
+          pointerEvents: 'none', zIndex: 0,
         }}
       />
 
@@ -166,7 +166,7 @@ export default function SpecializingSection() {
         style={{
           paddingTop: '96px', paddingBottom: '80px',
           position: 'relative', zIndex: 2,
-          borderBottom: '1px solid rgba(16,20,26,.1)',
+          borderBottom: '3px solid #10141A',
         }}
       >
         <div className="container-main">
@@ -174,24 +174,14 @@ export default function SpecializingSection() {
 
             {/* Left — Graphic with HUD frame */}
             <div ref={graphicRef} className="lg:w-1/2 flex justify-center relative">
-              {/* Thin border frame */}
-              <div aria-hidden="true" style={{ position:'absolute', inset:-8, borderRadius:16, border:'1px solid rgba(14,124,121,.18)', pointerEvents:'none' }} />
-              {/* Corner crops */}
-              {(['tl','tr','bl','br'] as const).map(pos => (
-                <span key={pos} aria-hidden="true" style={{
-                  position: 'absolute', width: 14, height: 14,
-                  ...(pos==='tl' ? { top:-8,    left:-8,  borderTop:'2px solid #0E7C79', borderLeft:'2px solid #0E7C79',   borderRadius:'3px 0 0 0' } : {}),
-                  ...(pos==='tr' ? { top:-8,    right:-8, borderTop:'2px solid #0E7C79', borderRight:'2px solid #0E7C79',  borderRadius:'0 3px 0 0' } : {}),
-                  ...(pos==='bl' ? { bottom:-8, left:-8,  borderBottom:'2px solid #0E7C79', borderLeft:'2px solid #0E7C79', borderRadius:'0 0 0 3px' } : {}),
-                  ...(pos==='br' ? { bottom:-8, right:-8, borderBottom:'2px solid #0E7C79', borderRight:'2px solid #0E7C79', borderRadius:'0 0 3px 0' } : {}),
-                  pointerEvents: 'none', zIndex: 10,
-                }} />
-              ))}
+              {/* Bold thick border frame */}
+              <div aria-hidden="true" style={{ position:'absolute', inset:-12, borderRadius:20, border:'3px solid #10141A', background: '#FAFAF7', boxShadow: '8px 8px 0px #10141A', pointerEvents:'none', zIndex: -1 }} />
+              
               <img
                 src={hoveredImage ? `/images/${hoveredImage}` : '/images/specializing-graphic.png'}
                 alt={hoveredImage ? 'Hovered skill illustration' : 'Abstract creative energy illustration'}
                 className="w-full max-w-[400px] lg:max-w-[460px] relative"
-                style={{ filter: 'drop-shadow(0 16px 40px rgba(16,20,26,.12))', transition: 'opacity 0.25s ease', zIndex: 5 }}
+                style={{ filter: 'drop-shadow(6px 6px 0px #10141A)', transition: 'opacity 0.25s ease', zIndex: 5 }}
               />
             </div>
 
@@ -224,7 +214,7 @@ export default function SpecializingSection() {
 
               <div
                 ref={dividerRef}
-                style={{ marginTop: 8, width: 40, height: 2, background: 'rgba(14,124,121,.35)', borderRadius: 2, marginBottom: 24 }}
+                style={{ marginTop: 8, width: 40, height: 4, background: '#10141A', borderRadius: 2, marginBottom: 24 }}
               />
 
               {/* Skills */}
@@ -274,10 +264,14 @@ export default function SpecializingSection() {
                       style={{
                         position: 'absolute', inset: '0 -4px',
                         borderRadius: 6,
-                        background: 'linear-gradient(90deg, rgba(14,124,121,0) 0%, rgba(14,124,121,.08) 40%, rgba(14,124,121,.05) 100%)',
+                        background: '#CFE7E3',
+                        border: '3px solid #10141A',
+                        boxShadow: '4px 4px 0px #10141A',
                         opacity: 0,
+                        transform: 'rotate(-1deg)',
                         transition: 'opacity .25s ease',
                         pointerEvents: 'none',
+                        zIndex: -1,
                       }}
                     />
                     {/* Text + animated underline */}
@@ -288,12 +282,10 @@ export default function SpecializingSection() {
                         aria-hidden="true"
                         style={{
                           position: 'absolute', bottom: 0, left: 0,
-                          height: '1.5px', width: '0%',
-                          background: 'linear-gradient(90deg, #0E7C79 0%, #7FE3D6 50%, #0E7C79 100%)',
-                          backgroundSize: '200% 100%',
+                          height: '4px', width: '0%',
+                          background: '#10141A',
                           borderRadius: 2,
                           transition: 'width .4s cubic-bezier(.25,.46,.45,.94)',
-                          animation: 'sp-shimmer 2.4s linear infinite',
                         }}
                       />
                     </span>
@@ -351,13 +343,14 @@ export default function SpecializingSection() {
               >
                 Technologies I use
               </h2>
-              <div style={{ marginTop: 8, width: 40, height: 2, background: 'rgba(14,124,121,.35)', borderRadius: 2 }} />
+              <div style={{ marginTop: 8, width: 40, height: 4, background: '#10141A', borderRadius: 2 }} />
             </div>
             {/* Counter badge */}
             <div style={{
               display: 'flex', alignItems: 'center', gap: 10,
-              background: 'rgba(14,124,121,.08)',
-              border: '1px solid rgba(14,124,121,.2)',
+              background: '#FAFAF7',
+              border: '3px solid #10141A',
+              boxShadow: '4px 4px 0px #10141A',
               borderRadius: 100, padding: '8px 18px',
             }}>
               <span style={{ width:7, height:7, borderRadius:'50%', background:'#0E7C79', animation:'sp-blip 2s ease-in-out infinite' }} />
@@ -390,25 +383,23 @@ export default function SpecializingSection() {
                       alignItems: 'center',
                       gap: 8,
                       background: '#FAFAF7',
-                      border: '1px solid rgba(16,20,26,.12)',
+                      border: '3px solid #10141A',
                       borderRadius: 8,
                       padding: '10px 18px',
                       cursor: 'default',
-                      transition: 'transform .25s cubic-bezier(.23,1,.32,1), box-shadow .25s ease, border-color .25s ease, background .25s ease',
-                      boxShadow: '0 1px 4px rgba(16,20,26,.06)',
+                      transition: 'transform .25s cubic-bezier(.23,1,.32,1), box-shadow .25s ease, background .25s ease',
+                      boxShadow: '3px 3px 0px #10141A',
                     }}
                     onMouseEnter={e => {
                       const el = e.currentTarget as HTMLDivElement;
-                      el.style.transform = 'translateY(-3px) scale(1.04)';
-                      el.style.boxShadow = '0 8px 24px -6px rgba(14,124,121,.22), 0 2px 8px -2px rgba(16,20,26,.12)';
-                      el.style.borderColor = 'rgba(14,124,121,.4)';
-                      el.style.background = '#F3FAF9';
+                      el.style.transform = 'translate(-4px, -4px) scale(1.02)';
+                      el.style.boxShadow = '7px 7px 0px #10141A';
+                      el.style.background = '#CFE7E3';
                     }}
                     onMouseLeave={e => {
                       const el = e.currentTarget as HTMLDivElement;
                       el.style.transform = '';
-                      el.style.boxShadow = '0 1px 4px rgba(16,20,26,.06)';
-                      el.style.borderColor = 'rgba(16,20,26,.12)';
+                      el.style.boxShadow = '3px 3px 0px #10141A';
                       el.style.background = '#FAFAF7';
                     }}
                   >

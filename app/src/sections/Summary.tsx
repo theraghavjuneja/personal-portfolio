@@ -194,10 +194,13 @@ export default function Summary() {
   font-weight:600;
 }
 .iw-word--hl.is-active {
-  background: var(--accent-soft);
-  color: var(--accent-ink);
+  background: #CFE7E3;
+  color: #10141A;
+  border: 3px solid #10141A;
+  box-shadow: 4px 4px 0px #10141A;
   border-radius: 5px;
   padding: 0 8px;
+  margin: 0 4px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }

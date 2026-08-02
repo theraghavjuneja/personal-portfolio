@@ -197,7 +197,8 @@ export default function HeroSection() {
         .hn__logo {
           font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:13px;
           letter-spacing:.02em; color:var(--ink); text-decoration:none;
-          border:1.5px solid var(--ink); border-radius:5px; padding:5px 10px;
+          border:2px solid var(--ink); border-radius:5px; padding:5px 10px;
+          box-shadow: 2px 2px 0px var(--ink);
         }
         .hn__status { display:flex; align-items:center; gap:8px; }
         .hn__dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
@@ -225,9 +226,13 @@ export default function HeroSection() {
         }
         .hl {
           background:var(--accent-soft);
-          color:var(--accent-ink);
+          color:var(--ink);
+          border: 3px solid var(--ink);
+          box-shadow: 4px 4px 0px var(--ink);
           border-radius:5px;
           padding:0 8px;
+          margin: 0 4px;
+          display: inline-block;
           box-decoration-break:clone;
           -webkit-box-decoration-break:clone;
         }
@@ -245,13 +250,14 @@ export default function HeroSection() {
           font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600;
           letter-spacing:.08em; text-transform:uppercase;
           color:var(--ink); text-decoration:none;
-          border:1.5px solid var(--ink); border-radius:7px; padding:13px 20px 13px 16px; width:fit-content;
+          border:3px solid var(--ink); border-radius:7px; padding:13px 20px 13px 16px; width:fit-content;
+          box-shadow: 4px 4px 0px var(--ink);
           opacity:0; transform:translateY(10px);
-          transition:opacity .45s ease 1.2s, transform .45s ease 1.2s, background .18s, color .18s, border-color .18s;
+          transition:opacity .45s ease 1.2s, transform .2s, background .18s, color .18s;
         }
         .go .cta { opacity:1; transform:none; }
         .cta__dot { width:6px; height:6px; border-radius:50%; background:var(--accent); flex:none; transition:background .18s; }
-        .cta:hover { background:var(--ink); color:var(--bg); }
+        .cta:hover { background:var(--ink); color:var(--bg); transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--ink); }
         .cta:hover .cta__dot { background:var(--accent-soft); }
         .cta svg { width:30px; height:13px; transition:transform .18s; }
         .cta:hover svg { transform:translateX(4px); }
@@ -267,10 +273,10 @@ export default function HeroSection() {
         .trace-card {
           width:302px;
           background:#0C1116;
-          border:1px solid rgba(238,240,234,.08);
+          border:3px solid #10141A;
           border-radius:12px;
           padding:16px 17px 14px;
-          box-shadow:0 20px 40px -18px rgba(16,20,26,.5);
+          box-shadow:8px 8px 0px #10141A;
         }
         .trace-head { display:flex; align-items:center; gap:8px; }
         .trace-dot { width:6px; height:6px; border-radius:50%; background:var(--term-ok); flex:none; animation:blip 2.2s ease-in-out infinite; }
@@ -323,9 +329,10 @@ export default function HeroSection() {
 
         .term-shadow {
           position:absolute; top:0; left:0; right:0; height:calc(100% - 40px);
-          background: var(--accent-soft);
+          background: #10141A;
+          border: 3px solid #10141A;
           border-radius:12px;
-          transform: rotate(-1.1deg) translate(9px,10px);
+          transform: rotate(-2deg) translate(8px,12px);
           z-index:0;
         }
 
@@ -333,10 +340,10 @@ export default function HeroSection() {
           position:relative; z-index:1; width:100%;
           transform: rotate(-1.1deg);
           background:#0C1116;
-          border:1px solid rgba(238,240,234,.08);
+          border:3px solid #10141A;
           border-radius:12px;
           overflow:hidden;
-          box-shadow: 0 22px 44px -18px rgba(16,20,26,.5);
+          box-shadow: 8px 8px 0px #10141A;
         }
 
         .term-bar {
@@ -376,22 +383,23 @@ export default function HeroSection() {
           display:flex; align-items:center; gap:6px;
           font-family:'IBM Plex Mono', monospace; font-size:9.5px; font-weight:600;
           letter-spacing:.1em; text-transform:uppercase; color:var(--ink-60);
-          background:rgba(255,255,255,.55); border:1px solid rgba(16,20,26,.1);
+          background:#FAFAF7; border:2px solid #10141A;
+          box-shadow: 2px 2px 0px #10141A;
           border-radius:20px; padding:5px 11px 5px 9px;
         }
         .term-meta__dot { width:5px; height:5px; border-radius:50%; background:var(--accent); flex:none; }
 
         /* Light-theme frosted glass to keep elements readable */
-        .badge { position:absolute; top:24px; right:24px; z-index:5; display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.6); backdrop-filter:blur(10px); border:1px solid rgba(16,20,26,.1); border-radius:7px; padding:7px 14px 7px 11px; opacity:0; transform:translateY(-6px); transition:opacity .5s ease 1s, transform .5s ease 1s; }
+        .badge { position:absolute; top:24px; right:24px; z-index:5; display:flex; align-items:center; gap:8px; background:#FAFAF7; border:3px solid #10141A; box-shadow: 4px 4px 0px #10141A; border-radius:7px; padding:7px 14px 7px 11px; opacity:0; transform:translateY(-6px); transition:opacity .5s ease 1s, transform .5s ease 1s; }
         .go .badge { opacity:1; transform:none; }
         .badge__dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blip 2.2s ease-in-out infinite; flex:none; }
         @keyframes blip { 0%,100%{box-shadow:0 0 0 0 rgba(14,124,121,.55)} 50%{box-shadow:0 0 0 5px rgba(14,124,121,0)} }
         .badge__text { font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-60); }
 
-        .glass { position:absolute; bottom:26px; left:24px; z-index:5; display:flex; flex-direction:column; gap:3px; background:rgba(255,255,255,.5); backdrop-filter:blur(14px); border:1px solid rgba(16,20,26,.1); border-radius:8px; padding:11px 18px; opacity:0; transform:translateY(6px); transition:opacity .5s ease 1.1s, transform .5s ease 1.1s; }
+        .glass { position:absolute; bottom:26px; left:24px; z-index:5; display:flex; flex-direction:column; gap:3px; background:#CFE7E3; border:3px solid #10141A; box-shadow: 4px 4px 0px #10141A; border-radius:8px; padding:11px 18px; opacity:0; transform:translateY(6px); transition:opacity .5s ease 1.1s, transform .5s ease 1.1s; }
         .go .glass { opacity:1; transform:none; }
         .glass__name { font-family:'Space Grotesk', sans-serif; font-size:15px; font-weight:600; color:var(--ink); letter-spacing:-.01em; }
-        .glass__role { font-family:'IBM Plex Mono', monospace; font-size:9.5px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-60); }
+        .glass__role { font-family:'IBM Plex Mono', monospace; font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); }
 
         @keyframes tkr { from{transform:translateX(0)} to{transform:translateX(-50%)} }
         .ticker { overflow:hidden; height:38px; display:flex; align-items:center; background:var(--ink); }

@@ -75,11 +75,10 @@ export default function CaseStudies() {
           flex-direction: column;
           justify-content: space-between;
           padding: 48px 28px 0 32px;
-          background: rgba(255,255,255,0.52);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border-right: 1px solid rgba(16,20,26,.13);
-          box-shadow: 4px 0 24px -8px rgba(16,20,26,.07);
+          background: #EEF0EA;
+          border-right: 3px solid #10141A;
+          box-shadow: 6px 0 0px #10141A;
+          z-index: 10;
         }
         .ws-aside__top { display: flex; flex-direction: column; gap: 0; }
         .ws-aside__name-row {
@@ -106,8 +105,12 @@ export default function CaseStudies() {
           margin: 0 0 20px;
         }
         .ws-aside__hl {
-          background: #CFE7E3; color: #063C3B;
+          background: #CFE7E3; color: #10141A;
+          border: 3px solid #10141A;
           border-radius: 5px; padding: 0 6px;
+          box-shadow: 3px 3px 0px #10141A;
+          display: inline-block;
+          transform: rotate(-2deg);
         }
         .ws-aside__bio {
           font-size: 13.5px;
@@ -125,7 +128,7 @@ export default function CaseStudies() {
           transition: gap .2s ease;
         }
         .ws-aside__cta:hover { gap: 12px; }
-        .ws-aside__hr { width: 100%; height: 1px; background: rgba(16,20,26,.1); margin-bottom: 22px; border: none; }
+        .ws-aside__hr { width: 100%; height: 3px; background: #10141A; margin-bottom: 22px; border: none; }
         .ws-aside__tech-label {
           font-family: 'IBM Plex Mono', monospace;
           font-size: 9px; font-weight: 700;
@@ -138,21 +141,19 @@ export default function CaseStudies() {
         .ws-tech-chip {
           font-family: 'IBM Plex Mono', monospace;
           font-size: 11.5px; font-weight: 600;
-          color: rgba(16,20,26,.6);
-          background: rgba(255,255,255,.65);
-          border: 1px solid rgba(16,20,26,.1);
+          color: #10141A;
+          background: #FAFAF7;
+          border: 2px solid #10141A;
           border-radius: 6px;
           padding: 5px 11px;
           cursor: default;
-          transition: color .2s, background .2s, border-color .2s, transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
-          letter-spacing: -0.01em;
+          transition: transform .2s, box-shadow .2s, background .2s;
+          box-shadow: 2px 2px 0px #10141A;
         }
         .ws-tech-chip:hover {
-          color: #0E7C79;
           background: #CFE7E3;
-          border-color: rgba(14,124,121,.3);
-          transform: translateY(-3px) scale(1.07);
-          box-shadow: 0 6px 18px -6px rgba(14,124,121,.3);
+          transform: translate(-2px, -2px) scale(1.03);
+          box-shadow: 4px 4px 0px #10141A;
         }
 
         /* Character image */
@@ -181,15 +182,17 @@ export default function CaseStudies() {
         /* ── Project card ── */
         .ws-card {
           background: #FAFAF7;
-          border: 1px solid rgba(16,20,26,.1);
+          border: 3px solid #10141A;
           border-radius: 16px;
           overflow: hidden;
           min-height: 88vh;
           display: flex; flex-direction: column;
-          transition: box-shadow .35s ease;
+          box-shadow: 6px 6px 0px #10141A;
+          transition: transform .2s, box-shadow .2s;
         }
         .ws-card:hover {
-          box-shadow: 0 24px 56px -20px rgba(16,20,26,.18), 0 8px 24px -10px rgba(14,124,121,.12);
+          transform: translate(-4px, -4px);
+          box-shadow: 10px 10px 0px #10141A;
         }
         .ws-card__img-wrap {
           position: relative; overflow: hidden;
@@ -203,26 +206,24 @@ export default function CaseStudies() {
         }
         .ws-card__num {
           position: absolute; top: 18px; left: 18px;
-          background: rgba(16,20,26,.7);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255,255,255,.1);
+          background: #FAFAF7;
+          border: 3px solid #10141A;
+          box-shadow: 4px 4px 0px #10141A;
           border-radius: 6px; padding: 5px 12px;
           font-family: 'IBM Plex Mono', monospace;
           font-size: 10px; font-weight: 700;
-          letter-spacing: .12em; color: rgba(238,240,234,.75);
+          letter-spacing: .12em; color: #10141A;
         }
         /* Viewfinder corners */
         .ws-vf { position: absolute; inset: 0; pointer-events: none; }
         .ws-vf span {
-          position: absolute; width: 18px; height: 18px;
-          border-color: rgba(14,124,121,.55); border-style: solid;
-          transition: border-color .3s;
+          position: absolute; width: 24px; height: 24px;
+          border-color: #10141A; border-style: solid;
         }
-        .ws-card:hover .ws-vf span { border-color: rgba(14,124,121,.9); }
-        .ws-vf span:nth-child(1) { top:14px; left:14px;  border-width:2px 0 0 2px; border-radius:4px 0 0 0; }
-        .ws-vf span:nth-child(2) { top:14px; right:14px; border-width:2px 2px 0 0; border-radius:0 4px 0 0; }
-        .ws-vf span:nth-child(3) { bottom:14px; left:14px;  border-width:0 0 2px 2px; border-radius:0 0 0 4px; }
-        .ws-vf span:nth-child(4) { bottom:14px; right:14px; border-width:0 2px 2px 0; border-radius:0 0 4px 0; }
+        .ws-vf span:nth-child(1) { top:14px; left:14px;  border-width:4px 0 0 4px; border-radius:6px 0 0 0; }
+        .ws-vf span:nth-child(2) { top:14px; right:14px; border-width:4px 4px 0 0; border-radius:0 6px 0 0; }
+        .ws-vf span:nth-child(3) { bottom:14px; left:14px;  border-width:0 0 4px 4px; border-radius:0 0 0 6px; }
+        .ws-vf span:nth-child(4) { bottom:14px; right:14px; border-width:0 4px 4px 0; border-radius:0 0 6px 0; }
 
         /* Info */
         .ws-card__info { flex:1; padding:30px 34px 26px; display:flex; flex-direction:column; }
@@ -230,8 +231,9 @@ export default function CaseStudies() {
         .ws-tag {
           font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700;
           letter-spacing:.07em; text-transform:uppercase;
-          color:#0E7C79; background:#CFE7E3;
-          border:1px solid rgba(14,124,121,.2); border-radius:100px; padding:4px 12px;
+          color:#10141A; background:#CFE7E3;
+          border:2px solid #10141A; box-shadow: 2px 2px 0px #10141A;
+          border-radius:100px; padding:4px 12px;
         }
         .ws-card__title {
           font-family:'Space Grotesk',system-ui,sans-serif;
@@ -249,8 +251,8 @@ export default function CaseStudies() {
           margin:0 0 24px; flex:1;
         }
         .ws-card__actions {
-          display:flex; flex-wrap:wrap; gap:10px;
-          padding-top:20px; border-top:1px solid rgba(16,20,26,.08);
+          display:flex; flex-wrap:wrap; gap:14px;
+          padding-top:20px; border-top:3px solid #10141A;
         }
         .ws-btn {
           display:inline-flex; align-items:center; gap:8px;
@@ -258,14 +260,15 @@ export default function CaseStudies() {
           font-size:11px; font-weight:700;
           letter-spacing:.06em; text-transform:uppercase;
           text-decoration:none; border-radius:8px; padding:10px 18px;
-          cursor:pointer; transition:background .2s,color .2s,border-color .2s,transform .2s,box-shadow .2s;
-          border-style:solid; border-width:1.5px; white-space:nowrap;
+          cursor:pointer; transition:transform .2s,box-shadow .2s,background .2s;
+          border:3px solid #10141A; white-space:nowrap;
+          box-shadow: 4px 4px 0px #10141A;
         }
-        .ws-btn:hover { transform:translateY(-2px); }
-        .ws-btn--dark { background:#10141A; color:#EEF0EA; border-color:#10141A; }
-        .ws-btn--dark:hover { background:#0E7C79; border-color:#0E7C79; box-shadow:0 8px 22px -8px rgba(14,124,121,.5); }
-        .ws-btn--ghost { background:transparent; color:rgba(16,20,26,.65); border-color:rgba(16,20,26,.18); }
-        .ws-btn--ghost:hover { background:rgba(16,20,26,.05); border-color:rgba(16,20,26,.32); color:#10141A; }
+        .ws-btn:hover { transform:translate(-2px, -2px); box-shadow: 6px 6px 0px #10141A; }
+        .ws-btn--dark { background:#10141A; color:#EEF0EA; }
+        .ws-btn--dark:hover { background:#0E7C79; color:#FAFAF7; }
+        .ws-btn--ghost { background:#FAFAF7; color:#10141A; }
+        .ws-btn--ghost:hover { background:#CFE7E3; color:#10141A; }
 
         @keyframes ws-pulse {
           0%,100% { box-shadow:0 0 0 0 rgba(14,124,121,.55); }
