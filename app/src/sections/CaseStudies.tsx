@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { PROJECTS } from '@/data/projects';
+import { Link } from 'react-router';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -185,7 +186,8 @@ export default function CaseStudies() {
           border: 3px solid #10141A;
           border-radius: 16px;
           overflow: hidden;
-          min-height: 88vh;
+          height: calc(100vh - 128px);
+          max-height: 900px;
           display: flex; flex-direction: column;
           box-shadow: 6px 6px 0px #10141A;
           transition: transform .2s, box-shadow .2s;
@@ -196,7 +198,7 @@ export default function CaseStudies() {
         }
         .ws-card__img-wrap {
           position: relative; overflow: hidden;
-          height: 54%; min-height: 300px;
+          height: 40%; min-height: 200px;
           flex-shrink: 0; background: #0C1116;
         }
         .ws-img {
@@ -226,7 +228,7 @@ export default function CaseStudies() {
         .ws-vf span:nth-child(4) { bottom:14px; right:14px; border-width:0 4px 4px 0; border-radius:0 0 6px 0; }
 
         /* Info */
-        .ws-card__info { flex:1; padding:30px 34px 26px; display:flex; flex-direction:column; }
+        .ws-card__info { flex:1; padding:24px 34px; display:flex; flex-direction:column; overflow-y: auto; }
         .ws-card__tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px; }
         .ws-tag {
           font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700;
@@ -280,6 +282,8 @@ export default function CaseStudies() {
           .ws-aside { position:static; width:100%; height:auto; border-right:none; border-bottom:1px solid rgba(16,20,26,.1); padding:56px 0 28px; }
           .ws-aside__char { display:none; }
           .ws-cards { padding:32px 0 60px; }
+          .ws-card { height: auto; min-height: 80vh; max-height: none; }
+          .ws-card__info { overflow-y: visible; }
         }
       `}</style>
 
@@ -363,7 +367,11 @@ export default function CaseStudies() {
                   <p className="ws-card__desc">{p.description}</p>
 
                   <div className="ws-card__actions">
-                    {p.caseStudyUrl && (
+                    {p.caseStudyUrl && p.caseStudyUrl.startsWith('/') ? (
+                      <Link to={p.caseStudyUrl} className="ws-btn ws-btn--dark">
+                        View Case Study <ArrowRight />
+                      </Link>
+                    ) : p.caseStudyUrl && (
                       <a href={p.caseStudyUrl} className="ws-btn ws-btn--dark">
                         View Case Study <ArrowRight />
                       </a>

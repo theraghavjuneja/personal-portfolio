@@ -232,6 +232,46 @@ const cards: {
       </>
     ),
   },
+  {
+    id: 'location',
+    w: 160,
+    pos: { top: '65%', right: '12%', transform: 'rotate(-4deg)' },
+    content: (
+      <>
+        <p className="ft-label">BASE</p>
+        <p style={{ fontFamily:"'Space Grotesk',system-ui,sans-serif", fontSize:14, fontWeight:700, color:'#10141A', lineHeight:1.5, marginTop:4 }}>
+          New Delhi,<br />India 📍
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'languages',
+    w: 180,
+    pos: { bottom: '26%', right: '28%', transform: 'rotate(3deg)' },
+    accent: '#FFE2D1',
+    content: (
+      <>
+        <p className="ft-label" style={{ color: '#10141A' }}>LANGUAGES</p>
+        <p style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:12, fontWeight:600, color:'#10141A', marginTop:4 }}>
+          English (Fluent)<br />Hindi (Native)
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'coffee',
+    w: 150,
+    pos: { top: '25%', left: '12%', transform: 'rotate(5deg)' },
+    content: (
+      <div style={{ textAlign: 'center' }}>
+        <p className="ft-label">FUEL</p>
+        <p style={{ fontSize: 24, margin: '4px 0' }}>☕️</p>
+        <p className="ft-card-name">Black Coffee</p>
+        <p className="ft-sub">no sugar needed.</p>
+      </div>
+    ),
+  },
 ];
 
 export default function Footer() {
@@ -498,23 +538,7 @@ export default function Footer() {
       `}</style>
 
       <div className="ft-canvas">
-        {/* Circle decoration */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            bottom: '-15%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '40%',
-            paddingBottom: '40%',
-            borderRadius: '50%',
-            background: '#CFE7E3',
-            border: '3px solid #10141A',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
+
 
         {/* Center heading */}
         <div ref={headingRef} className="ft-heading">

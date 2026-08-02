@@ -15,6 +15,9 @@ import Footer from '@/sections/Footer';
 import CustomCursor from '@/components/CustomCursor';
 import CaseStudies from './sections/CaseStudies';
 import Summary from './sections/Summary';
+import { Routes, Route } from 'react-router';
+import CaseStudyPage from '@/pages/CaseStudyPage';
+
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
@@ -38,14 +41,21 @@ function App() {
         <GrainOverlay />
         <Navigation />
         <main>
-          <AboutSection />
-          <Summary />
-          <CaseStudies />
-          <ExperienceSection />
-          <SpecializingSection />
-          <TalksSection />
+          <Routes>
+            <Route path="/" element={
+              <>
+                <AboutSection />
+                <Summary />
+                <CaseStudies />
+                <ExperienceSection />
+                <SpecializingSection />
+                <TalksSection />
+                <Footer />
+              </>
+            } />
+            <Route path="/case-study/:id" element={<CaseStudyPage />} />
+          </Routes>
         </main>
-        <Footer />
       </div>
     </ReducedMotionContext.Provider>
   );

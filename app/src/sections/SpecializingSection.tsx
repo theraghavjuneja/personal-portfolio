@@ -105,24 +105,22 @@ export default function SpecializingSection() {
         scrollTrigger: { trigger: techRef.current, start: 'top 82%', toggleActions: 'play none none none' },
       });
 
-      // ── Tech rows: stagger in from alternating sides ───────
-      rowRefs.current.forEach((row, i) => {
-        if (!row) return;
-        const chips = Array.from(row.children);
-        gsap.from(chips, {
-          opacity: 0,
-          y: 20,
-          scale: 0.88,
-          duration: 0.45,
-          stagger: { each: 0.07, from: i % 2 === 0 ? 'start' : 'end' },
-          ease: 'back.out(1.8)',
+      // ── Tech rows: slide in ───────
+      gsap.fromTo(rowRefs.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
           scrollTrigger: {
-            trigger: row,
-            start: 'top 88%',
+            trigger: techRef.current,
+            start: 'top 80%',
             toggleActions: 'play none none none',
           },
-        });
-      });
+        }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -361,75 +359,74 @@ export default function SpecializingSection() {
           </div>
 
           {/* Tech rows */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
             {TECH_ROWS.map((row, rowIdx) => (
               <div
                 key={rowIdx}
                 ref={el => { rowRefs.current[rowIdx] = el; }}
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 10,
-                  /* Alternate alignment for visual rhythm */
-                  justifyContent: rowIdx % 2 === 0 ? 'flex-start' : 'flex-end',
-                }}
+                style={{ opacity: 0 }} // Animated by GSAP
               >
-                {row.map((tech, j) => (
-                  <div
-                    key={j}
-                    className="tech-chip"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 8,
-                      background: '#FAFAF7',
-                      border: '3px solid #10141A',
-                      borderRadius: 8,
-                      padding: '10px 18px',
-                      cursor: 'default',
-                      transition: 'transform .25s cubic-bezier(.23,1,.32,1), box-shadow .25s ease, background .25s ease',
-                      boxShadow: '3px 3px 0px #10141A',
-                    }}
-                    onMouseEnter={e => {
-                      const el = e.currentTarget as HTMLDivElement;
-                      el.style.transform = 'translate(-4px, -4px) scale(1.02)';
-                      el.style.boxShadow = '7px 7px 0px #10141A';
-                      el.style.background = '#CFE7E3';
-                    }}
-                    onMouseLeave={e => {
-                      const el = e.currentTarget as HTMLDivElement;
-                      el.style.transform = '';
-                      el.style.boxShadow = '3px 3px 0px #10141A';
-                      el.style.background = '#FAFAF7';
-                    }}
-                  >
-                    <span
+                <div
+                  className={`tech-marquee tech-marquee-${rowIdx % 2 === 0 ? 'left' : 'right'}`}
+                  style={{ display: 'flex', gap: 12, width: 'max-content' }}
+                >
+                  {[...row, ...row, ...row, ...row].map((tech, j) => (
+                    <div
+                      key={j}
+                      className="tech-chip"
                       style={{
-                        fontFamily: "'IBM Plex Mono', monospace",
-                        fontSize: 14,
-                        color: '#0E7C79',
-                        lineHeight: 1,
-                        width: 16,
-                        textAlign: 'center',
-                        flexShrink: 0,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        background: '#FAFAF7',
+                        border: '3px solid #10141A',
+                        borderRadius: 8,
+                        padding: '10px 18px',
+                        cursor: 'default',
+                        transition: 'transform .2s, box-shadow .2s, background .2s',
+                        boxShadow: '3px 3px 0px #10141A',
+                      }}
+                      onMouseEnter={e => {
+                        const el = e.currentTarget as HTMLDivElement;
+                        el.style.transform = 'translate(-4px, -4px) scale(1.02)';
+                        el.style.boxShadow = '7px 7px 0px #10141A';
+                        el.style.background = '#CFE7E3';
+                      }}
+                      onMouseLeave={e => {
+                        const el = e.currentTarget as HTMLDivElement;
+                        el.style.transform = '';
+                        el.style.boxShadow = '3px 3px 0px #10141A';
+                        el.style.background = '#FAFAF7';
                       }}
                     >
-                      {tech.icon}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-                        fontSize: 14,
-                        fontWeight: 600,
-                        color: '#10141A',
-                        letterSpacing: '-0.01em',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {tech.name}
-                    </span>
-                  </div>
-                ))}
+                      <span
+                        style={{
+                          fontFamily: "'IBM Plex Mono', monospace",
+                          fontSize: 14,
+                          color: '#0E7C79',
+                          lineHeight: 1,
+                          width: 16,
+                          textAlign: 'center',
+                          flexShrink: 0,
+                        }}
+                      >
+                        {tech.icon}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+                          fontSize: 14,
+                          fontWeight: 600,
+                          color: '#10141A',
+                          letterSpacing: '-0.01em',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {tech.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -445,6 +442,23 @@ export default function SpecializingSection() {
         @keyframes sp-shimmer {
           0%   { background-position: 200% center; }
           100% { background-position: -200% center; }
+        }
+        .tech-marquee-left {
+          animation: marquee-l 35s linear infinite;
+        }
+        .tech-marquee-right {
+          animation: marquee-r 35s linear infinite;
+        }
+        .tech-marquee:hover {
+          animation-play-state: paused;
+        }
+        @keyframes marquee-l {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-25%); }
+        }
+        @keyframes marquee-r {
+          0% { transform: translateX(-25%); }
+          100% { transform: translateX(0); }
         }
       `}</style>
     </section>

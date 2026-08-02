@@ -16,7 +16,7 @@ export const PROJECTS: Project[] = [
     description: 'Architected an event-driven campaign engine for B2C enterprises using Temporal.IO — fault-tolerant by design, optimized for PostgreSQL at scale. Handles retries, timeouts and business logic as code.',
     image: '/images/work-2.jpg',
     tags: ['System Design', 'Temporal.IO', 'PostgreSQL'],
-    caseStudyUrl: '#',
+    caseStudyUrl: '/case-study/scaling-workflows',
     liveUrl: '#',
   },
   {

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Linkedin, Github } from 'lucide-react';
+import { useLocation, useNavigate, Link } from 'react-router';
 
 const navLinks = [
   { label: 'Work', href: '#work' },
@@ -14,6 +15,8 @@ export default function Navigation() {
   const [activeLink, setActiveLink] = useState('');
   const { reducedMotion, setReducedMotion } = useReducedMotion();
   const navRef = useRef<HTMLElement>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -42,6 +45,12 @@ export default function Navigation() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setActiveLink(href);
+    
+    if (location.pathname !== '/') {
+      navigate(`/${href}`);
+      return;
+    }
+    
     document.querySelector(href)?.scrollIntoView({
       behavior: reducedMotion ? 'auto' : 'smooth',
     });
@@ -190,14 +199,12 @@ export default function Navigation() {
           display: flex;
           align-items: center;
           gap: 28px;
-          height: 46px;
-          padding: 0 20px;
+          height: 52px;
+          padding: 0 24px;
           border-radius: 100px;
-          background: rgba(238, 240, 234, 0.88);          /* sage tint */
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          border: 1px solid rgba(16,20,26,0.10);
-          box-shadow: 0 4px 24px rgba(16,20,26,.08), 0 1px 3px rgba(16,20,26,.04);
+          background: #FAFAF7;
+          border: 3px solid #10141A;
+          box-shadow: 4px 4px 0px #10141A;
           animation: pillFloat 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
           z-index: 60;
         }
@@ -215,18 +222,20 @@ export default function Navigation() {
         <div className="w-full px-6 lg:px-16 xl:px-24 flex items-center justify-between">
 
           {/* ── Logo monogram ── */}
-          <a
-            href="#"
+          <Link
+            to="/"
             onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+              if (location.pathname === '/') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+              }
             }}
             aria-label="Back to top"
           >
             {/* <div className="logo-ring">
               <span className="logo-mark">RJ</span>
             </div> */}
-          </a>
+          </Link>
 
           {/* ── Centre nav links ── */}
           <div className="hidden md:flex items-center gap-9">
@@ -288,11 +297,13 @@ export default function Navigation() {
         <div className="nav-pill">
 
           {/* Monogram — smaller inside pill */}
-          <a
-            href="#"
+          <Link
+            to="/"
             onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+              if (location.pathname === '/') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+              }
             }}
             aria-label="Back to top"
           >
@@ -303,18 +314,29 @@ export default function Navigation() {
                 fontWeight: 700,
                 color: '#10141A',
                 letterSpacing: '0.02em',
-                transition: 'color 0.2s',
+                transition: 'transform 0.2s, box-shadow 0.2s',
                 cursor: 'pointer',
-                border: '1.5px solid rgba(16,20,26,.18)',
-                borderRadius: '5px',
-                padding: '4px 8px',
+                background: '#CFE7E3',
+                border: '2px solid #10141A',
+                borderRadius: '8px',
+                padding: '4px 10px',
+                boxShadow: '2px 2px 0px #10141A',
+                display: 'inline-block'
               }}
-              onMouseEnter={(e) => ((e.target as HTMLElement).style.color = '#0E7C79')}
-              onMouseLeave={(e) => ((e.target as HTMLElement).style.color = '#10141A')}
+              onMouseEnter={(e) => {
+                const el = e.target as HTMLElement;
+                el.style.transform = 'translate(-2px, -2px)';
+                el.style.boxShadow = '4px 4px 0px #10141A';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.target as HTMLElement;
+                el.style.transform = 'translate(0, 0)';
+                el.style.boxShadow = '2px 2px 0px #10141A';
+              }}
             >
-              [RJ]
+              RJ
             </span>
-          </a>
+          </Link>
 
           {/* Hairline divider */}
           <span style={{ width: '1px', height: '16px', background: 'rgba(26,26,26,0.12)' }} />
