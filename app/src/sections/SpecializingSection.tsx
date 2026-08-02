@@ -140,7 +140,7 @@ export default function SpecializingSection() {
         aria-hidden="true"
         style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(rgba(16,20,26,.15) 2px, transparent 2px)',
+          backgroundImage: 'radial-gradient(rgba(16,20,26,.15) 1px, transparent 1px)',
           backgroundSize: '24px 24px',
           pointerEvents: 'none', zIndex: 0,
         }}
