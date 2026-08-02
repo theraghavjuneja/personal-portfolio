@@ -7,7 +7,7 @@ import NewSection from './sections/WorkSection3';
 import GrainOverlay from '@/components/GrainOverlay';
 import Navigation from '@/components/Navigation';
 // import HeroSection from '@/sections/HeroSection';
-import WorkSection from '@/sections/WorkSection';
+// WorkSection replaced by NewSection (sticky sidebar layout)
 import AboutSection from '@/sections/AboutSection';
 import ExperienceSection from '@/sections/ExperienceSection';
 import SpecializingSection from '@/sections/SpecializingSection';
@@ -40,8 +40,7 @@ function App() {
         <Navigation />
         <main>
           <AboutSection />
-          <WorkSection />
-          <NewSection/>
+          <NewSection />
           <ExperienceSection />
           <SpecializingSection />
           <TalksSection />

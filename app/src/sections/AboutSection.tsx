@@ -29,48 +29,8 @@ function Letters({ text, cls = "", offset = 0 }) {
 }
 
 
-const TRACE_SPANS = [
-  { label: "gateway",    start: 0,  w: 9,  dur: "2ms", color: "rgba(238,240,234,.55)" },
-  { label: "auth-svc",   start: 9,  w: 17, dur: "4ms", color: "var(--term-ok)" },
-  { label: "orders-svc", start: 26, w: 39, dur: "9ms", color: "var(--term-ok)" },
-  { label: "postgres",   start: 65, w: 26, dur: "6ms", color: "rgba(238,240,234,.4)" },
-  { label: "cache",      start: 91, w: 9,  dur: "2ms", color: "var(--accent-soft-ink)" },
-];
 
-function TraceCard() {
-  return (
-    <div className="trace-wrap">
-      <div className="trace-card">
-        <div className="trace-head">
-          <span className="trace-dot" />
-          <span className="trace-route">GET /v1/orders</span>
-          <span className="trace-total">23ms</span>
-        </div>
-        <div className="trace-sub">trace 8f2a1c1e · 5 spans</div>
 
-        <div className="trace-rows">
-          {TRACE_SPANS.map((s, i) => (
-            <div className="trace-row" key={s.label}>
-              <span className="trace-label">{s.label}</span>
-              <span className="trace-track">
-                <span
-                  className="trace-bar"
-                  style={{
-                    "--start": `${s.start}%`,
-                    "--w": `${s.w}%`,
-                    "--bd": `${i * 0.32}s`,
-                    background: s.color,
-                  }}
-                />
-              </span>
-              <span className="trace-dur">{s.dur}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /* ---- Deploy console: the right-panel signature element ---- */
 
@@ -108,7 +68,7 @@ function useDeployScript() {
       return;
     }
 
-    
+
     let active = true;
 
     async function run() {
@@ -248,10 +208,8 @@ export default function HeroSection() {
         .left {
           display:flex; flex-direction:column; justify-content:center;
           padding:0 48px 60px 44px; position:relative;
-          background-image:
-            linear-gradient(var(--line) 1px, transparent 1px),
-            linear-gradient(90deg, var(--line) 1px, transparent 1px);
-          background-size: 42px 42px;
+          background-image: radial-gradient(rgba(16,20,26,.16) 1px, transparent 1px);
+          background-size: 22px 22px;
           background-position: -1px -1px;
         }
         .left__inner { position:relative; z-index:2; }
@@ -342,16 +300,14 @@ export default function HeroSection() {
 
         /* RIGHT SECTION */
         .right {
-          position:relative;
-          overflow:hidden;
-          opacity:0;
-          transition:opacity 1s ease .1s;
-          background-image:
-            linear-gradient(var(--line) 1px, transparent 1px),
-            linear-gradient(90deg, var(--line) 1px, transparent 1px);
-          background-size: 42px 42px;
-          background-position: -1px -1px;
-        }
+  position:relative;
+  overflow:hidden;
+  opacity:0;
+  transition:opacity 1s ease .1s;
+  background-image: radial-gradient(rgba(16,20,26,.16) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+}
         .go .right { opacity:1; }
 
         /* ---- Deploy console signature element ---- */
@@ -445,7 +401,7 @@ export default function HeroSection() {
 
         @media (max-width:900px) {
           .hero { grid-template-columns:1fr; grid-template-rows:auto 46vh; height:auto; }
-          .left { padding:44px 26px 34px; background-size:32px 32px; }
+          .left { padding:44px 26px 34px; background-size:18px 18px; }
           .trace-wrap { display:none; }
           .term-meta { display:none; }
           .term-body { font-size:11px; min-height:180px; }
@@ -469,14 +425,14 @@ export default function HeroSection() {
           <a className="hn__logo" href="#">[RJ]</a>
           <div className="hn__status">
             <span className="hn__dot" />
-            
+
           </div>
         </nav>
 
         <section className="hero" id="about">
           {/* LEFT */}
           <div className="left">
-            <TraceCard />
+            {/* <TraceCard /> */}
 
             <div className="left__inner">
               <h1 className="hd">

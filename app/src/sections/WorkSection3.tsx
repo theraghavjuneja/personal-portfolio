@@ -3,453 +3,384 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { PROJECTS } from '@/data/projects';
+
 gsap.registerPlugin(ScrollTrigger);
 
-// Card dimensions — image area stays fixed height; grid gives the card its final size
-const CARD_IMG_H = 200; // fixed height of the image area within every card
-const CARD_FULL_H = 340; // height of a card's measurement slot (image + text area)
+const CORE_TECH = ['Node.js', 'Go', 'Python', 'PostgreSQL', 'Redis', 'Kafka', 'Docker', 'Kubernetes', 'AWS', 'GCP'];
 
-export default function NewSection() {
-  const outerRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const measureRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const flyRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const infoRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const frameRefs = useRef<(HTMLDivElement | null)[]>([]);
+function ArrowRight() {
+  return (
+    <svg width="13" height="11" viewBox="0 0 13 11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 5.5h10"/><path d="M7 1l4.5 4.5L7 10"/>
+    </svg>
+  );
+}
+function GithubIcon() {
+  return <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>;
+}
+function ExternalIcon() {
+  return <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 2H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7"/><path d="M8 1h3v3M11 1 6 6"/></svg>;
+}
+
+export default function WorkSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardRefs   = useRef<(HTMLDivElement | null)[]>([]);
   const { reducedMotion } = useReducedMotion();
 
   useEffect(() => {
-    if (reducedMotion) {
-      if (heroRef.current) gsap.set(heroRef.current, { opacity: 0 });
-
-      // Measure the real grid slots and drop every card straight into place, fully visible
-      if (measureRef.current && stickyRef.current) {
-        gsap.set(measureRef.current, { visibility: 'visible', opacity: 0 });
-        const cRect = stickyRef.current.getBoundingClientRect();
-        const gridTargets = (Array.from(measureRef.current.children) as HTMLElement[]).map(el => {
-          const r = el.getBoundingClientRect();
-          return { x: r.left - cRect.left, y: r.top - cRect.top, w: r.width, h: r.height };
-        });
-        gsap.set(measureRef.current, { visibility: 'hidden' });
-
-        flyRefs.current.forEach((el, i) => {
-          if (!el) return;
-          const g = gridTargets[i];
-          gsap.set(el, { x: g.x, y: g.y, width: g.w, height: g.h, opacity: 1, scale: 1, filter: 'blur(0px)' });
-        });
-
-        const firstCard = gridTargets[0];
-        if (titleRef.current) {
-          gsap.set(titleRef.current, { x: firstCard.x, y: firstCard.y - 68, opacity: 1 });
-        }
-      }
-
-      infoRefs.current.forEach(el => el && gsap.set(el, { opacity: 1, y: 0 }));
-      frameRefs.current.forEach(el => el && gsap.set(el, { opacity: 1 }));
-      return;
-    }
-
+    if (reducedMotion) return;
     const ctx = gsap.context(() => {
-      const sticky = stickyRef.current!;
-
-      /* ── Measure final grid positions ────────────────────────────────── */
-      gsap.set(measureRef.current, { visibility: 'visible', opacity: 0 });
-      const cRect = sticky.getBoundingClientRect();
-
-      const gridTargets = (Array.from(measureRef.current!.children) as HTMLElement[]).map(el => {
-        const r = el.getBoundingClientRect();
-        return {
-          x: r.left - cRect.left,
-          y: r.top - cRect.top,
-          w: r.width,
-          h: r.height,
-        };
-      });
-      gsap.set(measureRef.current, { visibility: 'hidden' });
-
-      /* ── Title target: directly above first project ──────────────────── */
-      const firstCard = gridTargets[0];
-      const titleTargetY = firstCard.y - 68;
-
-      /* ── Initial state ──────────────────────────────────────────────────
-         Cards sit at their real, final grid slot from the start — nothing
-         travels across the screen. Only opacity / scale / blur animate, so
-         each card simply materializes in place. */
-      gsap.set(heroRef.current, { opacity: 0, y: 40 });
-      gsap.set(titleRef.current, { opacity: 0, x: firstCard.x, y: titleTargetY + 16 });
-
-      flyRefs.current.forEach((el, i) => {
-        if (!el) return;
-        const g = gridTargets[i];
-        gsap.set(el, {
-          x: g.x,
-          y: g.y,
-          width: g.w,
-          height: g.h,
-          opacity: 0,
-          scale: 0.9,
-          filter: 'blur(8px)',
+      cardRefs.current.forEach(card => {
+        if (!card) return;
+        gsap.from(card, {
+          opacity: 0, y: 72, duration: 0.9, ease: 'power3.out',
+          scrollTrigger: { trigger: card, start: 'top 86%', toggleActions: 'play none none none' },
         });
+        const img = card.querySelector<HTMLImageElement>('.ws-img');
+        if (img) {
+          gsap.to(img, {
+            yPercent: -8, ease: 'none',
+            scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: 1.2 },
+          });
+        }
       });
-      infoRefs.current.forEach(el => el && gsap.set(el, { opacity: 0, y: 10 }));
-      frameRefs.current.forEach(el => el && gsap.set(el, { opacity: 0 }));
-
-      /* ── Build scroll-driven timeline ───────────────────────────────── */
-      const tl = gsap.timeline({ paused: true });
-
-      // Phase 1 (0–14%): hero text in
-      tl.to(heroRef.current, { opacity: 1, y: 0, duration: 0.14, ease: 'power2.out' }, 0);
-
-      // Phase 2 (16–60%): cards materialize in place, staggered left→right, top→bottom
-      flyRefs.current.forEach((el, i) => {
-        if (!el) return;
-        tl.to(el, {
-          opacity: 1,
-          scale: 1,
-          filter: 'blur(0px)',
-          duration: 0.16,
-          ease: 'power2.out',
-        }, 0.16 + i * 0.055);
-      });
-
-      // Phase 3 (40–50%): hero text fades as the grid takes over
-      tl.to(heroRef.current, { opacity: 0, y: -20, duration: 0.1, ease: 'power2.in' }, 0.40);
-
-      // Phase 4 (62–74%): viewfinder frames fade in once cards have settled
-      frameRefs.current.forEach((el, i) => {
-        if (!el) return;
-        tl.to(el, { opacity: 1, duration: 0.12, ease: 'power2.out' }, 0.62 + i * 0.02);
-      });
-
-      // Phase 5 (66–78%): card info fades in
-      infoRefs.current.forEach((el, i) => {
-        if (!el) return;
-        tl.to(el, { opacity: 1, y: 0, duration: 0.1, ease: 'power2.out' }, 0.66 + i * 0.02);
-      });
-
-      // Section title appears above first project
-      tl.to(titleRef.current, { opacity: 1, y: titleTargetY, duration: 0.12, ease: 'power2.out' }, 0.72);
-
-      /* ── Wire timeline to scroll ─────────────────────────────────────── */
-      ScrollTrigger.create({
-        trigger: outerRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1.6,
-        onUpdate: self => tl.progress(self.progress),
-      });
-
-    }, outerRef);
-
+    }, sectionRef);
     return () => ctx.revert();
   }, [reducedMotion]);
 
   return (
-    <div ref={outerRef} className="wk-root" style={{ height: '380vh' }}>
-      <div
-        ref={stickyRef}
-        className="wk-sticky"
-        style={{
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
-          overflow: 'hidden',
-        }}
-      >
-        <span className="wk-crop wk-crop--tl" />
-        <span className="wk-crop wk-crop--br" />
-
-        {/* ── Hero copy (Phase 1) ───────────────────────────────────────── */}
-        <div ref={heroRef} className="wk-hero">
-          <span className="wk-hero__eyebrow">
-            <span className="wk-hero__dot" />
-            Case Studies &amp; Work
-          </span>
-          <h2 className="wk-hero__heading">
-            I build <span className="hl">products</span><br />
-            not just <span className="hl">backends</span>
-          </h2>
-          <p className="wk-hero__sub">Engineered for reliability, shipped for outcomes.</p>
-        </div>
-
-        {/* ── Flying cards (Phases 2–5) ────────────────────────────────── */}
-        {PROJECTS.map((p, i) => (
-          <div
-            key={i}
-            ref={el => { flyRefs.current[i] = el; }}
-            className="wk-card"
-            data-theme={p.image ? 'light' : 'dark'}
-            style={{ zIndex: 20 + i }}
-          >
-            <div className="wk-card__inner">
-              {/* Image area */}
-              <div className="wk-card__img-wrap">
-                {p.image
-                  ? <img src={p.image} alt={p.title} className="wk-card__img" />
-                  : <div className="wk-card__dark-bg" />
-                }
-              </div>
-
-              {/* Info area — fades in at grid phase */}
-              <div
-                ref={el => { infoRefs.current[i] = el; }}
-                className={`wk-card__info${p.image ? '' : ' wk-card__info--dark'}`}
-              >
-                <h3 className="wk-card__title">{p.title}</h3>
-                <p className="wk-card__desc">{p.description}</p>
-                <div className="wk-card__tags">
-                  {p.tags.map(t => (
-                    <span key={t} className="wk-tag">{t}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Optional brand badge (hover) */}
-              {p.brand && (
-                <div className="wk-card__brand">{p.brand}</div>
-              )}
-
-              {/* Viewfinder / HUD frame */}
-              <div
-                ref={el => { frameRefs.current[i] = el; }}
-                className="wk-viewfinder"
-                style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0 }}
-              >
-                {/* Corners */}
-                <div style={{ position: 'absolute', top: 0, left: 0, width: 12, height: 12, borderTop: '2px solid currentColor', borderLeft: '2px solid currentColor', borderRadius: '12px 0 0 0' }} />
-                <div style={{ position: 'absolute', top: 0, right: 0, width: 12, height: 12, borderTop: '2px solid currentColor', borderRight: '2px solid currentColor', borderRadius: '0 12px 0 0' }} />
-                <div style={{ position: 'absolute', bottom: 0, left: 0, width: 12, height: 12, borderBottom: '2px solid currentColor', borderLeft: '2px solid currentColor', borderRadius: '0 0 0 12px' }} />
-                <div style={{ position: 'absolute', bottom: 0, right: 0, width: 12, height: 12, borderBottom: '2px solid currentColor', borderRight: '2px solid currentColor', borderRadius: '0 0 12px 0' }} />
-
-                {/* Top edges (broken center) */}
-                <div style={{ position: 'absolute', top: 0, left: 12, width: 'calc(45% - 12px)', height: 2, background: 'currentColor' }} />
-                <div style={{ position: 'absolute', top: 0, right: 12, width: 'calc(45% - 12px)', height: 2, background: 'currentColor' }} />
-
-                {/* Bottom edges (broken center) */}
-                <div style={{ position: 'absolute', bottom: 0, left: 12, width: 'calc(45% - 12px)', height: 2, background: 'currentColor' }} />
-                <div style={{ position: 'absolute', bottom: 0, right: 12, width: 'calc(45% - 12px)', height: 2, background: 'currentColor' }} />
-
-                {/* Continuous vertical edges */}
-                <div style={{ position: 'absolute', left: 0, top: 12, bottom: 12, width: 2, background: 'currentColor' }} />
-                <div style={{ position: 'absolute', right: 0, top: 12, bottom: 12, width: 2, background: 'currentColor' }} />
-              </div>
-            </div>
-          </div>
-        ))}
-
-        {/* ── Invisible measurement grid ────────────────────────────────── */}
-        <div ref={measureRef} className="wk-measure-grid" style={{ visibility: 'hidden' }}>
-          {PROJECTS.map((_, i) => (
-            <div key={i} className="wk-measure-item" />
-          ))}
-        </div>
-
-        {/* ── Section title (appears above first project) ──────────────── */}
-        <div
-          ref={titleRef}
-          className="wk-section-title"
-          style={{ position: 'absolute', left: 0, top: 0, zIndex: 40 }}
-        >
-          <span className="wk-section-title__dot" />
-          <span className="wk-section-title__text">Case Studies &amp; Work</span>
-          <div className="wk-section-title__line" />
-        </div>
-
-      </div>
-
-      {/* ── Design-system-matched styles ─────────────────────────────────── */}
+    <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600;700&display=swap');
-
-        .wk-root {
-          --bg: #EEF0EA;
-          --ink: #10141A;
-          --ink-60: rgba(16,20,26,.6);
-          --ink-40: rgba(16,20,26,.4);
-          --line: rgba(16,20,26,.14);
-          --accent: #0E7C79;
-          --accent-ink: #063C3B;
-          --accent-soft: #CFE7E3;
-          --accent-soft-ink: #63B6AE;
-          --term-ok: #7FE3D6;
-
-          font-family:'IBM Plex Sans', system-ui, sans-serif;
-          position: relative;
+        .ws-root {
+          background: #EEF0EA;
+          background-image: radial-gradient(rgba(16,20,26,.09) 1px, transparent 1px);
+          background-size: 22px 22px;
+          font-family: 'IBM Plex Sans', system-ui, sans-serif;
+        }
+        .ws-layout {
+          display: flex;
+          align-items: flex-start;
+          max-width: 1320px;
+          margin: 0 auto;
+          padding: 0 40px;
+          min-height: 100vh;
         }
 
-        .wk-sticky {
-          background: var(--bg);
+        /* ── Sticky sidebar ── */
+        .ws-aside {
+          position: sticky;
+          top: 0;
+          width: 300px;
+          height: 100vh;
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 48px 36px 0 0;
+          border-right: 1px solid rgba(16,20,26,.1);
+        }
+        .ws-aside__top { display: flex; flex-direction: column; gap: 0; }
+        .ws-aside__name-row {
+          display: flex; align-items: center; gap: 8px;
+          margin-bottom: 22px;
+        }
+        .ws-aside__name {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 14px; font-weight: 700;
+          color: #10141A; letter-spacing: -0.01em;
+        }
+        .ws-aside__dot {
+          width: 8px; height: 8px; border-radius: 50%;
+          background: #0E7C79; flex-shrink: 0;
+          animation: ws-pulse 2.2s ease-in-out infinite;
+        }
+        .ws-aside__headline {
+          font-family: 'Space Grotesk', system-ui, sans-serif;
+          font-size: clamp(26px, 2.6vw, 36px);
+          font-weight: 800;
+          color: #10141A;
+          letter-spacing: -0.04em;
+          line-height: 1.15;
+          margin: 0 0 20px;
+        }
+        .ws-aside__hl {
+          background: #CFE7E3; color: #063C3B;
+          border-radius: 5px; padding: 0 6px;
+        }
+        .ws-aside__bio {
+          font-size: 13.5px;
+          color: rgba(16,20,26,.56);
+          line-height: 1.75;
+          margin: 0 0 24px;
+        }
+        .ws-aside__cta {
+          display: inline-flex; align-items: center; gap: 7px;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 11px; font-weight: 700;
+          letter-spacing: .07em; text-transform: uppercase;
+          color: #0E7C79; text-decoration: none;
+          margin-bottom: 28px;
+          transition: gap .2s ease;
+        }
+        .ws-aside__cta:hover { gap: 12px; }
+        .ws-aside__hr { width: 100%; height: 1px; background: rgba(16,20,26,.1); margin-bottom: 22px; border: none; }
+        .ws-aside__tech-label {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 9px; font-weight: 700;
+          letter-spacing: .18em; text-transform: uppercase;
+          color: rgba(16,20,26,.32); margin-bottom: 14px;
+        }
+        .ws-aside__tech-grid {
+          display: flex; flex-wrap: wrap; gap: 7px;
+        }
+        .ws-tech-chip {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 11.5px; font-weight: 600;
+          color: rgba(16,20,26,.6);
+          background: rgba(255,255,255,.65);
+          border: 1px solid rgba(16,20,26,.1);
+          border-radius: 6px;
+          padding: 5px 11px;
+          cursor: default;
+          transition: color .2s, background .2s, border-color .2s, transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
+          letter-spacing: -0.01em;
+        }
+        .ws-tech-chip:hover {
+          color: #0E7C79;
+          background: #CFE7E3;
+          border-color: rgba(14,124,121,.3);
+          transform: translateY(-3px) scale(1.07);
+          box-shadow: 0 6px 18px -6px rgba(14,124,121,.3);
         }
 
-        /* Corner crop marks — echoes hero page framing */
-        .wk-crop { position:absolute; width:18px; height:18px; z-index:45; pointer-events:none; opacity:.35; }
-        .wk-crop::before, .wk-crop::after { content:''; position:absolute; background:var(--ink); }
-        .wk-crop::before { width:100%; height:1px; top:0; left:0; }
-        .wk-crop::after { width:1px; height:100%; top:0; left:0; }
-        .wk-crop--tl { top:24px; left:24px; }
-        .wk-crop--br { bottom:24px; right:24px; transform:rotate(180deg); }
-
-        .hl {
-          background:var(--accent-soft);
-          color:var(--accent-ink);
-          border-radius:5px;
-          padding:0 8px;
-          box-decoration-break:clone;
-          -webkit-box-decoration-break:clone;
+        /* Character image */
+        .ws-aside__char {
+          width: 100%;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          padding-top: 12px;
+          overflow: hidden;
+        }
+        .ws-aside__char img {
+          width: 160px;
+          filter: drop-shadow(0 -4px 16px rgba(16,20,26,.08));
+          user-select: none;
+          pointer-events: none;
         }
 
-        /* ── Hero copy overlay ────────────────────────────────────────── */
-        .wk-hero {
-          position:absolute; inset:0; z-index:30;
-          display:flex; flex-direction:column; align-items:center; justify-content:center;
-          text-align:center; padding:0 24px; pointer-events:none;
+        /* ── Right scroll column ── */
+        .ws-cards {
+          flex: 1; min-width: 0;
+          padding: 48px 0 80px 40px;
+          display: flex; flex-direction: column; gap: 24px;
         }
-        .wk-hero__eyebrow {
+
+        /* ── Project card ── */
+        .ws-card {
+          background: #FAFAF7;
+          border: 1px solid rgba(16,20,26,.1);
+          border-radius: 16px;
+          overflow: hidden;
+          min-height: 88vh;
+          display: flex; flex-direction: column;
+          transition: box-shadow .35s ease;
+        }
+        .ws-card:hover {
+          box-shadow: 0 24px 56px -20px rgba(16,20,26,.18), 0 8px 24px -10px rgba(14,124,121,.12);
+        }
+        .ws-card__img-wrap {
+          position: relative; overflow: hidden;
+          height: 54%; min-height: 300px;
+          flex-shrink: 0; background: #0C1116;
+        }
+        .ws-img {
+          width: 100%; height: 108%;
+          object-fit: cover; display: block;
+          transform: translateY(0);
+        }
+        .ws-card__num {
+          position: absolute; top: 18px; left: 18px;
+          background: rgba(16,20,26,.7);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,255,255,.1);
+          border-radius: 6px; padding: 5px 12px;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 10px; font-weight: 700;
+          letter-spacing: .12em; color: rgba(238,240,234,.75);
+        }
+        /* Viewfinder corners */
+        .ws-vf { position: absolute; inset: 0; pointer-events: none; }
+        .ws-vf span {
+          position: absolute; width: 18px; height: 18px;
+          border-color: rgba(14,124,121,.55); border-style: solid;
+          transition: border-color .3s;
+        }
+        .ws-card:hover .ws-vf span { border-color: rgba(14,124,121,.9); }
+        .ws-vf span:nth-child(1) { top:14px; left:14px;  border-width:2px 0 0 2px; border-radius:4px 0 0 0; }
+        .ws-vf span:nth-child(2) { top:14px; right:14px; border-width:2px 2px 0 0; border-radius:0 4px 0 0; }
+        .ws-vf span:nth-child(3) { bottom:14px; left:14px;  border-width:0 0 2px 2px; border-radius:0 0 0 4px; }
+        .ws-vf span:nth-child(4) { bottom:14px; right:14px; border-width:0 2px 2px 0; border-radius:0 0 4px 0; }
+
+        /* Info */
+        .ws-card__info { flex:1; padding:30px 34px 26px; display:flex; flex-direction:column; }
+        .ws-card__tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px; }
+        .ws-tag {
+          font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700;
+          letter-spacing:.07em; text-transform:uppercase;
+          color:#0E7C79; background:#CFE7E3;
+          border:1px solid rgba(14,124,121,.2); border-radius:100px; padding:4px 12px;
+        }
+        .ws-card__title {
+          font-family:'Space Grotesk',system-ui,sans-serif;
+          font-size:clamp(22px,2.6vw,32px); font-weight:800;
+          color:#10141A; letter-spacing:-.035em; line-height:1.12;
+          margin:0 0 8px;
+        }
+        .ws-card__sub {
+          font-family:'IBM Plex Mono',monospace;
+          font-size:12px; font-weight:600; letter-spacing:.04em;
+          color:#0E7C79; margin:0 0 16px;
+        }
+        .ws-card__desc {
+          font-size:15px; color:rgba(16,20,26,.6); line-height:1.75;
+          margin:0 0 24px; flex:1;
+        }
+        .ws-card__actions {
+          display:flex; flex-wrap:wrap; gap:10px;
+          padding-top:20px; border-top:1px solid rgba(16,20,26,.08);
+        }
+        .ws-btn {
           display:inline-flex; align-items:center; gap:8px;
-          font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:700;
-          letter-spacing:.16em; text-transform:uppercase; color:var(--ink-60);
-          margin-bottom:18px;
+          font-family:'IBM Plex Mono',monospace;
+          font-size:11px; font-weight:700;
+          letter-spacing:.06em; text-transform:uppercase;
+          text-decoration:none; border-radius:8px; padding:10px 18px;
+          cursor:pointer; transition:background .2s,color .2s,border-color .2s,transform .2s,box-shadow .2s;
+          border-style:solid; border-width:1.5px; white-space:nowrap;
         }
-        .wk-hero__dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:wk-blip 2.2s ease-in-out infinite; }
-        .wk-hero__heading {
-          font-family:'Space Grotesk', system-ui, sans-serif;
-          font-weight:700;
-          font-size:clamp(40px,5.6vw,64px);
-          line-height:1.12;
-          letter-spacing:-.025em;
-          color:var(--ink);
-          margin:0 0 16px;
-        }
-        .wk-hero__sub {
-          font-family:'IBM Plex Sans', sans-serif;
-          font-weight:500;
-          font-size:16px; line-height:1.55; color:var(--ink-60);
-          max-width:460px; margin:0 auto;
-        }
+        .ws-btn:hover { transform:translateY(-2px); }
+        .ws-btn--dark { background:#10141A; color:#EEF0EA; border-color:#10141A; }
+        .ws-btn--dark:hover { background:#0E7C79; border-color:#0E7C79; box-shadow:0 8px 22px -8px rgba(14,124,121,.5); }
+        .ws-btn--ghost { background:transparent; color:rgba(16,20,26,.65); border-color:rgba(16,20,26,.18); }
+        .ws-btn--ghost:hover { background:rgba(16,20,26,.05); border-color:rgba(16,20,26,.32); color:#10141A; }
 
-        @keyframes wk-blip {
+        @keyframes ws-pulse {
           0%,100% { box-shadow:0 0 0 0 rgba(14,124,121,.55); }
-          50% { box-shadow:0 0 0 5px rgba(14,124,121,0); }
+          50%      { box-shadow:0 0 0 6px rgba(14,124,121,0); }
         }
-
-        /* ── Flying / grid cards ──────────────────────────────────────── */
-        .wk-card {
-          position:absolute; top:0; left:0;
-          cursor:pointer;
-        }
-        .wk-card__inner {
-          width:100%; height:100%;
-          position:relative;
-          display:flex; flex-direction:column;
-          overflow:hidden;
-          border-radius:12px;
-          background:#FAFAF7;
-          border:1px solid var(--line);
-          box-shadow:0 16px 34px -20px rgba(16,20,26,.35);
-          transition: transform .4s cubic-bezier(.23,1,.32,1), box-shadow .4s ease;
-        }
-        .wk-card[data-theme="dark"] .wk-card__inner {
-          background:#0C1116;
-          border:1px solid rgba(238,240,234,.08);
-        }
-        .wk-card:hover .wk-card__inner {
-          transform:translateY(-6px);
-          box-shadow:0 26px 48px -18px rgba(16,20,26,.4), 0 10px 26px -10px rgba(14,124,121,.28);
-        }
-
-        .wk-card__img-wrap {
-          flex:0 0 ${CARD_IMG_H}px;
-          overflow:hidden;
-          position:relative;
-        }
-        .wk-card__img {
-          width:100%; height:100%; object-fit:cover; display:block;
-          transition: transform .6s cubic-bezier(.23,1,.32,1);
-        }
-        .wk-card:hover .wk-card__img { transform:scale(1.06); }
-        .wk-card__dark-bg { width:100%; height:100%; background:#0C1116; }
-
-        .wk-card__info {
-          flex:1 1 auto;
-          overflow:hidden;
-          padding:18px 20px 20px;
-          display:flex; flex-direction:column; gap:6px;
-        }
-        .wk-card__title {
-          font-family:'Space Grotesk', system-ui, sans-serif;
-          font-weight:700; font-size:20px; line-height:1.25;
-          letter-spacing:-.01em; color:var(--ink);
-        }
-        .wk-card__desc {
-          font-family:'IBM Plex Sans', sans-serif;
-          font-weight:500;
-          font-size:13px; line-height:1.55; color:var(--ink-60);
-          display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-        }
-        .wk-card__info--dark .wk-card__title { color:rgba(238,240,234,.92); }
-        .wk-card__info--dark .wk-card__desc { color:rgba(238,240,234,.55); }
-
-        .wk-card__tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
-        .wk-tag {
-          font-family:'IBM Plex Mono', monospace; font-size:9.5px; font-weight:700;
-          letter-spacing:.08em; text-transform:uppercase; color:var(--ink-60);
-          background:rgba(255,255,255,.6); border:1px solid rgba(16,20,26,.1);
-          border-radius:20px; padding:4px 10px;
-        }
-        .wk-card__info--dark .wk-tag {
-          color:rgba(238,240,234,.7);
-          background:rgba(238,240,234,.08); border:1px solid rgba(238,240,234,.14);
-        }
-
-        .wk-viewfinder { color:var(--ink); transition:color .35s ease, opacity .3s ease; }
-        .wk-card[data-theme="dark"] .wk-viewfinder { color:rgba(238,240,234,.55); }
-        .wk-card:hover .wk-viewfinder { color:var(--accent); }
-
-        .wk-card__brand {
-          position:absolute; top:14px; left:14px;
-          background:var(--accent); color:var(--bg);
-          font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:700;
-          text-transform:uppercase; letter-spacing:.1em;
-          padding:5px 11px; border-radius:5px;
-          opacity:0; transform:translateY(-6px);
-          transition:all .35s cubic-bezier(.23,1,.32,1);
-          pointer-events:none; z-index:10;
-        }
-        .wk-card:hover .wk-card__brand { opacity:1; transform:translateY(0); }
-
-        /* ── Measurement grid (invisible — defines final layout) ───────── */
-        .wk-measure-grid {
-          position:relative; z-index:0;
-          display:grid; grid-template-columns:repeat(3, 1fr);
-          gap:32px;
-          max-width:1180px; margin:0 auto;
-          padding:104px 48px 40px;
-        }
-        .wk-measure-item { height:${CARD_FULL_H}px; }
-
-        /* ── Section title (revealed above first card) ─────────────────── */
-        .wk-section-title { display:flex; align-items:center; gap:8px; }
-        .wk-section-title__dot { width:5px; height:5px; border-radius:50%; background:var(--accent); flex:none; }
-        .wk-section-title__text {
-          font-family:'IBM Plex Mono', monospace; font-size:10.5px; font-weight:700;
-          letter-spacing:.14em; text-transform:uppercase; color:var(--ink-60);
-        }
-        .wk-section-title__line { flex:1 1 auto; height:1px; background:var(--line); margin-left:4px; max-width:60px; }
 
         @media (max-width:900px) {
-          .wk-measure-grid { grid-template-columns:repeat(2, 1fr); gap:20px; padding:96px 24px 32px; }
-          .wk-hero__heading { font-size:clamp(30px,8vw,42px); }
-          .wk-crop { display:none; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .wk-card__inner, .wk-card__img, .wk-viewfinder, .wk-card__brand { transition:none !important; }
-          .wk-card:hover .wk-card__inner { transform:none; }
-          .wk-hero__dot { animation:none !important; }
+          .ws-layout { flex-direction:column; padding:0 20px; }
+          .ws-aside { position:static; width:100%; height:auto; border-right:none; border-bottom:1px solid rgba(16,20,26,.1); padding:56px 0 28px; }
+          .ws-aside__char { display:none; }
+          .ws-cards { padding:32px 0 60px; }
         }
       `}</style>
-    </div>
+
+      <div ref={sectionRef} id="work" className="ws-root">
+        <div className="ws-layout">
+
+          {/* ── Sticky left sidebar ── */}
+          <aside className="ws-aside">
+
+            {/* Top content block */}
+            <div className="ws-aside__top">
+              <div className="ws-aside__name-row">
+                <span className="ws-aside__name">Raghav Juneja</span>
+                <span className="ws-aside__dot" />
+              </div>
+
+              <h2 className="ws-aside__headline">
+                Building backend<br />
+                systems that{' '}
+                <span className="ws-aside__hl">ship.</span>
+              </h2>
+
+              <p className="ws-aside__bio">
+                Backend engineer building low-latency, high-impact distributed systems.
+                3+ years · 12+ projects shipped in production.
+              </p>
+
+              <a href="#contact" className="ws-aside__cta">
+                Get in touch <ArrowRight />
+              </a>
+
+              <hr className="ws-aside__hr" />
+
+              <p className="ws-aside__tech-label">Core Technologies</p>
+              <div className="ws-aside__tech-grid">
+                {CORE_TECH.map(t => (
+                  <span key={t} className="ws-tech-chip">{t}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom — character illustration */}
+            <div className="ws-aside__char">
+              <img
+                src="https://www.manasdev.codes/images/openpeeps-character.png"
+                alt="Character illustration"
+                loading="lazy"
+              />
+            </div>
+          </aside>
+
+          {/* ── Right scrolling cards ── */}
+          <div className="ws-cards">
+            {PROJECTS.map((p, i) => (
+              <div
+                key={i}
+                ref={el => { cardRefs.current[i] = el; }}
+                className="ws-card"
+              >
+                {/* Image */}
+                <div className="ws-card__img-wrap">
+                  {p.image
+                    ? <img src={p.image} alt={p.title} className="ws-img" />
+                    : <div style={{ width:'100%', height:'100%', background:'linear-gradient(135deg,#0C1116,#1a2232)' }} />
+                  }
+                  <div className="ws-card__num">
+                    {String(i + 1).padStart(2, '0')} / {String(PROJECTS.length).padStart(2, '0')}
+                  </div>
+                  <div className="ws-vf">
+                    <span/><span/><span/><span/>
+                  </div>
+                </div>
+
+                {/* Info */}
+                <div className="ws-card__info">
+                  <div className="ws-card__tags">
+                    {p.tags.map(t => <span key={t} className="ws-tag">{t}</span>)}
+                  </div>
+                  <h3 className="ws-card__title">{p.title}</h3>
+                  {p.subtitle && <p className="ws-card__sub">{p.subtitle}</p>}
+                  <p className="ws-card__desc">{p.description}</p>
+
+                  <div className="ws-card__actions">
+                    {p.caseStudyUrl && (
+                      <a href={p.caseStudyUrl} className="ws-btn ws-btn--dark">
+                        View Case Study <ArrowRight />
+                      </a>
+                    )}
+                    {p.sourceUrl && (
+                      <a href={p.sourceUrl} className="ws-btn ws-btn--ghost" target="_blank" rel="noopener noreferrer">
+                        <GithubIcon /> Source Code
+                      </a>
+                    )}
+                    {p.liveUrl && (
+                      <a href={p.liveUrl} className="ws-btn ws-btn--ghost" target="_blank" rel="noopener noreferrer">
+                        <ExternalIcon /> Live Demo
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </>
   );
 }

@@ -2,7 +2,6 @@ import { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import MorphingShape from '@/components/MorphingShape';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,7 +43,7 @@ function StarRating() {
           <button key={n} onClick={() => { setRating(n); setSubmitted(true); }}
             onMouseEnter={() => setHovered(n)} onMouseLeave={() => setHovered(0)}
             style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 22, lineHeight: 1,
-              color: n <= (hovered || rating) ? '#E2A74F' : 'rgba(30,30,30,0.18)', transition: 'color 0.15s, transform 0.15s',
+              color: n <= (hovered || rating) ? '#0E7C79' : 'rgba(16,20,26,.18)', transition: 'color 0.15s, transform 0.15s',
               transform: n <= hovered ? 'scale(1.25)' : 'scale(1)' }}>★</button>
         ))}
       </div>
@@ -69,7 +68,7 @@ const cards: {
     pos: { top: '5%', left: '5%', transform: 'rotate(-4deg)' },
     content: (
       <>
-        <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'linear-gradient(135deg,#C8563B,#E2A74F)', margin: '0 auto 8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 800, color: '#fff' }}>R</div>
+        <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'linear-gradient(135deg,#0E7C79,#7FE3D6)', margin: '0 auto 8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 800, color: '#EEF0EA' }}>R</div>
         <p className="ft-card-name">Raghav Juneja</p>
         <p className="ft-sub" style={{ textAlign: 'center' }}>India 🇮🇳</p>
       </>
@@ -85,7 +84,7 @@ const cards: {
     id: 'rating',
     w: 168,
     pos: { top: '3%', left: '48%', transform: 'rotate(-2deg)' },
-    accent: 'rgba(226,167,79,0.10)',
+    accent: 'rgba(14,124,121,.08)',
     content: <StarRating />,
   },
   {
@@ -95,10 +94,10 @@ const cards: {
     pos: { top: '7%', right: '18%', transform: 'rotate(3deg)' },
     content: (
       <a href="mailto:raghav@lexipitch.com" className="ft-cta-link">
-        <p className="ft-label" style={{ color: 'rgba(255,255,255,0.4)' }}>OPEN TO WORK</p>
+        <p className="ft-label" style={{ color: 'rgba(238,240,234,.4)' }}>OPEN TO WORK</p>
         <p className="ft-cta-icon">📬</p>
         <p className="ft-cta-title">Book a call</p>
-        <p className="ft-sub" style={{ color: 'rgba(255,255,255,0.42)' }}>Schedule 30 min</p>
+        <p className="ft-sub" style={{ color: 'rgba(238,240,234,.42)' }}>Schedule 30 min</p>
       </a>
     ),
   },
@@ -106,11 +105,11 @@ const cards: {
     id: 'role',
     w: 175,
     pos: { top: '4%', right: '2%', transform: 'rotate(-3deg)' },
-    accent: 'rgba(58,112,86,0.08)',
+    accent: 'rgba(14,124,121,.07)',
     content: (
       <>
-        <div className="ft-avail-row"><div className="ft-avail-dot" /><span style={{ fontFamily:"'DM Sans'", fontSize:10, fontWeight:700, color:'#3A7056', letterSpacing:'0.08em', textTransform:'uppercase' as const }}>Available Now</span></div>
-        <p style={{ fontFamily:"'DM Sans'", fontSize:16, fontWeight:800, color:'#1a1a1a', marginTop:10, lineHeight:1.2 }}>Backend<br />Engineer</p>
+        <div className="ft-avail-row"><div className="ft-avail-dot" /><span style={{ fontFamily:"'IBM Plex Mono'", fontSize:9, fontWeight:700, color:'#0E7C79', letterSpacing:'0.10em', textTransform:'uppercase' as const }}>Available Now</span></div>
+        <p style={{ fontFamily:"'Space Grotesk'", fontSize:16, fontWeight:800, color:'#10141A', marginTop:10, lineHeight:1.2 }}>Backend<br />Engineer</p>
         <p className="ft-sub" style={{ marginTop:6 }}>→ India, Remote<br />→ Freelance &amp; FT</p>
       </>
     ),
@@ -122,9 +121,9 @@ const cards: {
     pos: { top: '42%', left: '2%', transform: 'rotate(-3deg)' },
     content: (
       <>
-        <p className="ft-label" style={{ color: 'rgba(255,255,255,0.4)' }}>A GLIMPSE OF ME</p>
+        <p className="ft-label" style={{ color: 'rgba(238,240,234,.4)' }}>A GLIMPSE OF ME</p>
         <img src="/images/about-photo.png" alt="Raghav" style={{ width: '100%', borderRadius: 8, marginTop: 8, aspectRatio: '4/3', objectFit: 'cover' }} />
-        <p className="ft-sub" style={{ color: 'rgba(255,255,255,0.4)', marginTop: 6 }}>just vibing </p>
+        <p className="ft-sub" style={{ color: 'rgba(238,240,234,.4)', marginTop: 6 }}>just vibing </p>
       </>
     ),
   },
@@ -145,11 +144,11 @@ const cards: {
     id: 'fun',
     w: 162,
     pos: { top: '55%', left: '3%', transform: 'rotate(3deg)' },
-    accent: 'rgba(244,168,176,0.18)',
+    accent: 'rgba(127,227,214,.12)',
     content: (
       <>
-        <p className="ft-label" style={{ color: '#C8563B' }}>FUN FACT</p>
-        <p style={{ fontFamily:"'Cormorant Garamond',Georgia,serif", fontStyle:'italic', fontSize:14, fontWeight:600, color:'#1a1a1a', lineHeight:1.5, marginTop:4 }}>
+        <p className="ft-label" style={{ color: '#0E7C79' }}>FUN FACT</p>
+        <p style={{ fontFamily:"'Space Grotesk',system-ui,sans-serif", fontSize:14, fontWeight:600, color:'#10141A', lineHeight:1.5, marginTop:4 }}>
           i love<br />animals
         </p>
       </>
@@ -180,11 +179,11 @@ const cards: {
     id: 'resume',
     w: 140,
     pos: { top: '40%', right: '3%', transform: 'rotate(4deg)' },
-    accent: 'rgba(226,167,79,0.12)',
+    accent: 'rgba(14,124,121,.07)',
     content: (
       <div style={{ textAlign: 'center' }}>
         <p className="ft-label">CV</p>
-        <p style={{ fontFamily:"'DM Sans'", fontSize:20, fontWeight:800, color:'#1a1a1a', marginBottom:2 }}>Resume</p>
+        <p style={{ fontFamily:"'Space Grotesk'", fontSize:20, fontWeight:800, color:'#10141A', marginBottom:2 }}>Resume</p>
         <p className="ft-sub">PDF · 1 page ↗</p>
       </div>
     ),
@@ -211,11 +210,11 @@ const cards: {
     pos: { bottom: '10%', right: '4%', transform: 'rotate(-3deg)' },
     content: (
       <>
-        <p className="ft-label" style={{ color: 'rgba(255,255,255,0.35)' }}>CURRENTLY</p>
-        <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:700, color:'#fff', lineHeight:1.4 }}>
+        <p className="ft-label" style={{ color: 'rgba(238,240,234,.35)' }}>CURRENTLY</p>
+        <p style={{ fontFamily:"'Space Grotesk'", fontSize:13, fontWeight:700, color:'#fff', lineHeight:1.4 }}>
           backend engineer<br />@ Lexipitch
         </p>
-        <p className="ft-sub" style={{ color:'rgba(255,255,255,0.4)', marginTop:6 }}>3+ yrs · 12+ projects</p>
+        <p className="ft-sub" style={{ color:'rgba(238,240,234,.4)', marginTop:6 }}>3+ yrs · 12+ projects</p>
       </>
     ),
   },
@@ -223,11 +222,11 @@ const cards: {
     id: 'quote',
     w: 200,
     pos: { bottom: '12%', left: '24%', transform: 'rotate(2deg)' },
-    accent: 'rgba(200,86,59,0.07)',
+    accent: 'rgba(14,124,121,.06)',
     content: (
       <>
-        <p className="ft-label" style={{ color: '#C8563B' }}>MOTTO</p>
-        <p style={{ fontFamily:"'Cormorant Garamond',Georgia,serif", fontStyle:'italic', fontSize:15, fontWeight:600, color:'#1a1a1a', lineHeight:1.5, marginTop:6 }}>
+        <p className="ft-label" style={{ color: '#0E7C79' }}>MOTTO</p>
+        <p style={{ fontFamily:"'Space Grotesk',system-ui,sans-serif", fontStyle:'italic', fontSize:14, fontWeight:600, color:'#10141A', lineHeight:1.5, marginTop:6 }}>
           "Ship it, measure it,<br />then make it beautiful."
         </p>
       </>
@@ -247,7 +246,7 @@ export default function Footer() {
     const ctx = gsap.context(() => {
       // Heading scale-in
       gsap.from(headingRef.current, {
-        opacity: 0, scale: 0.88, y: 24, duration: 1.1, ease: 'power3.out',
+        opacity: 0, scale: 0.9, y: 24, duration: 1.0, ease: 'power3.out',
         scrollTrigger: { trigger: footerRef.current, start: 'top 78%', toggleActions: 'play none none none' },
       });
 
@@ -255,25 +254,15 @@ export default function Footer() {
       cardsRef.current.forEach((card, i) => {
         if (!card) return;
         const angle  = (i / cards.length) * Math.PI * 2;
-        const radius = 220 + Math.random() * 80;
+        const radius = 200 + Math.random() * 80;
         gsap.fromTo(card,
-          {
-            opacity: 0,
-            x: Math.cos(angle) * radius,
-            y: Math.sin(angle) * radius,
-            scale: 0.7,
-            rotation: (Math.random() - 0.5) * 30,
-          },
+          { opacity: 0, x: Math.cos(angle) * radius, y: Math.sin(angle) * radius, scale: 0.72, rotation: (Math.random() - 0.5) * 28 },
           {
             opacity: 1, x: 0, y: 0, scale: 1, rotation: 0,
-            duration: 0.9,
-            delay: i * 0.08,
-            ease: 'back.out(1.5)',
-            scrollTrigger: {
-              trigger: footerRef.current,
-              start: 'top 78%',
-              toggleActions: 'play none none none',
-            },
+            duration: 0.85,
+            delay: i * 0.07,
+            ease: 'back.out(1.4)',
+            scrollTrigger: { trigger: footerRef.current, start: 'top 78%', toggleActions: 'play none none none' },
           }
         );
       });
@@ -288,11 +277,28 @@ export default function Footer() {
         .ft-canvas {
           position: relative;
           min-height: 100vh;
-          background: linear-gradient(155deg, #FAF0D6 0%, #F7DDD8 38%, #F4C2C2 100%);
+          background: #EEF0EA;
           overflow: hidden;
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+        .ft-canvas::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(rgba(16,20,26,.1) 1px, transparent 1px);
+          background-size: 22px 22px;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .ft-canvas::after {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent 0%, #0E7C79 40%, transparent 100%);
+          z-index: 1;
         }
         .ft-heading {
           position: relative;
@@ -302,104 +308,106 @@ export default function Footer() {
           pointer-events: none;
         }
         .ft-heading h2 {
-          font-family: 'DM Sans', system-ui, sans-serif;
+          font-family: 'Space Grotesk', system-ui, sans-serif;
           font-size: clamp(44px, 8vw, 96px);
           font-weight: 800;
           letter-spacing: -3px;
           line-height: 1.02;
-          color: #1a1a1a;
+          color: #10141A;
           margin: 0;
         }
         .ft-heading .accent {
-          font-family: 'Cormorant Garamond', Georgia, serif;
           font-style: italic;
-          font-weight: 600;
-          color: #C8563B;
+          font-weight: 700;
+          color: #0E7C79;
           letter-spacing: 0;
-          font-size: 1.12em;
+          font-size: 1.08em;
+          background: #CFE7E3;
+          border-radius: 6px;
+          padding: 0 10px;
         }
         .ft-card {
           position: absolute;
           z-index: 10;
-          background: rgba(255,255,255,0.62);
+          background: rgba(250,250,247,0.72);
           backdrop-filter: blur(18px);
           -webkit-backdrop-filter: blur(18px);
-          border: 1px solid rgba(255,255,255,0.78);
-          border-radius: 16px;
+          border: 1px solid rgba(16,20,26,.1);
+          border-radius: 14px;
           padding: 16px;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+          box-shadow: 0 4px 20px rgba(16,20,26,.08), 0 1px 4px rgba(16,20,26,.05);
           transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
           cursor: default;
           will-change: transform;
         }
         .ft-card:hover {
           transform: translateY(-5px) scale(1.04) !important;
-          box-shadow: 0 16px 48px rgba(0,0,0,0.11), 0 2px 8px rgba(0,0,0,0.06);
+          box-shadow: 0 16px 48px rgba(16,20,26,.12), 0 4px 12px rgba(14,124,121,.1);
           z-index: 25;
         }
         .ft-card--dark {
-          background: rgba(24,24,24,0.92);
-          border-color: rgba(255,255,255,0.08);
+          background: rgba(16,20,26,0.92);
+          border-color: rgba(238,240,234,.08);
         }
-        .ft-card--dark:hover { background: rgba(24,24,24,1); }
+        .ft-card--dark:hover { background: rgba(16,20,26,1); }
         .ft-label {
-          font-family: 'DM Sans', system-ui, sans-serif;
+          font-family: 'IBM Plex Mono', monospace;
           font-size: 9px;
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: rgba(30,30,30,0.38);
+          color: rgba(16,20,26,.38);
           margin-bottom: 4px;
         }
         .ft-sub {
-          font-family: 'Inter', system-ui, sans-serif;
+          font-family: 'IBM Plex Sans', system-ui, sans-serif;
           font-size: 10px;
-          color: rgba(30,30,30,0.4);
+          color: rgba(16,20,26,.4);
           line-height: 1.55;
           margin-top: 3px;
         }
         .ft-card-name {
-          font-family: 'DM Sans', system-ui, sans-serif;
+          font-family: 'Space Grotesk', system-ui, sans-serif;
           font-size: 13px;
           font-weight: 700;
-          color: #1a1a1a;
+          color: #10141A;
           text-align: center;
           margin-top: 4px;
         }
         .ft-clock {
-          font-family: 'DM Sans', system-ui, sans-serif;
-          font-size: 26px;
-          font-weight: 800;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 24px;
+          font-weight: 700;
           letter-spacing: -1px;
-          color: #1a1a1a;
+          color: #10141A;
           line-height: 1.15;
         }
         .ft-clock-ampm {
           font-size: 10px;
           font-weight: 600;
           letter-spacing: 0.08em;
-          opacity: 0.45;
+          opacity: 0.4;
         }
         .ft-avail-row { display: flex; align-items: center; gap: 6px; }
         .ft-avail-dot {
           width: 7px; height: 7px;
           border-radius: 50%;
-          background: #3A7056;
+          background: #0E7C79;
           animation: ftPulse 2s ease-in-out infinite;
           flex-shrink: 0;
         }
         @keyframes ftPulse {
-          0%,100% { box-shadow: 0 0 0 0 rgba(58,112,86,0.35); }
-          50%      { box-shadow: 0 0 0 6px rgba(58,112,86,0); }
+          0%,100% { box-shadow: 0 0 0 0 rgba(14,124,121,.4); }
+          50%      { box-shadow: 0 0 0 6px rgba(14,124,121,0); }
         }
         .ft-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
         .ft-tag {
-          font-family: 'Inter', system-ui, sans-serif;
+          font-family: 'IBM Plex Mono', monospace;
           font-size: 9px;
           font-weight: 600;
-          color: #555;
-          background: rgba(0,0,0,0.05);
-          border: 1px solid rgba(0,0,0,0.08);
+          color: 'rgba(16,20,26,.6)';
+          background: rgba(16,20,26,.05);
+          border: 1px solid rgba(16,20,26,.09);
           border-radius: 20px;
           padding: 3px 9px;
         }
@@ -408,31 +416,31 @@ export default function Footer() {
           display: flex;
           align-items: center;
           gap: 8px;
-          font-family: 'DM Sans', system-ui, sans-serif;
-          font-size: 12px;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 11px;
           font-weight: 600;
-          color: #1a1a1a;
+          color: #10141A;
           text-decoration: none;
           transition: color 0.2s;
         }
-        .ft-link:hover { color: #C8563B; }
+        .ft-link:hover { color: #0E7C79; }
         .ft-link-icon {
           width: 22px; height: 22px;
-          border-radius: 6px;
+          border-radius: 5px;
           display: flex; align-items: center; justify-content: center;
           font-size: 11px; font-weight: 700;
-          background: rgba(30,30,30,0.06);
+          background: rgba(16,20,26,.06);
           flex-shrink: 0;
           transition: background 0.2s, color 0.2s;
         }
-        .ft-link:hover .ft-link-icon { background: #C8563B; color: white; }
+        .ft-link:hover .ft-link-icon { background: #0E7C79; color: #EEF0EA; }
         .ft-cta-link { text-decoration: none; display: block; text-align: center; }
         .ft-cta-icon { font-size: 20px; margin: 6px 0 2px; }
         .ft-cta-title {
-          font-family: 'DM Sans', system-ui, sans-serif;
+          font-family: 'Space Grotesk', system-ui, sans-serif;
           font-size: 14px;
           font-weight: 700;
-          color: white;
+          color: rgba(238,240,234,.92);
         }
         .ft-copyright {
           position: absolute;
@@ -443,16 +451,16 @@ export default function Footer() {
           pointer-events: none;
         }
         .ft-copyright-accent {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'IBM Plex Mono', monospace;
           font-style: italic;
-          font-size: 13px;
-          color: rgba(30,30,30,0.45);
+          font-size: 11px;
+          color: rgba(16,20,26,.35);
           margin-bottom: 4px;
         }
         .ft-copyright-text {
-          font-family: 'Inter', system-ui, sans-serif;
+          font-family: 'IBM Plex Sans', system-ui, sans-serif;
           font-size: 10px;
-          color: rgba(30,30,30,0.3);
+          color: rgba(16,20,26,.28);
           letter-spacing: 0.02em;
         }
         @media (max-width: 900px) {
@@ -484,13 +492,23 @@ export default function Footer() {
       `}</style>
 
       <div className="ft-canvas">
-        {/* Decorative shapes */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <MorphingShape type="spiral"    color="rgba(200,86,59,0.12)"  size={110} className="absolute top-[10%] left-[16%]" />
-          <MorphingShape type="blob"      color="rgba(226,167,79,0.14)" size={85}  className="absolute top-[18%] right-[30%]" />
-          <MorphingShape type="starburst" color="rgba(58,112,86,0.10)"  size={55}  className="absolute bottom-[28%] left-[42%]" />
-          <MorphingShape type="swirl"     color="rgba(244,168,176,0.18)" size={65} className="absolute bottom-[14%] right-[28%]" />
-        </div>
+        {/* Teal glow at bottom */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            bottom: '-18%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '60%',
+            paddingBottom: '30%',
+            borderRadius: '50%',
+            background: 'radial-gradient(ellipse at 50% 100%, rgba(14,124,121,.09) 0%, transparent 70%)',
+            filter: 'blur(60px)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
 
         {/* Center heading */}
         <div ref={headingRef} className="ft-heading">
@@ -509,7 +527,7 @@ export default function Footer() {
               style={{
                 width: card.w,
                 ...card.pos,
-                ...(card.accent ? { background: card.accent, borderColor: 'transparent' } : {}),
+                ...(card.accent ? { background: card.accent, borderColor: 'rgba(14,124,121,.12)' } : {}),
               }}
             >
               {card.content}
@@ -524,7 +542,7 @@ export default function Footer() {
               key={card.id}
               ref={el => { cardsRef.current[i] = el; }}
               className={`ft-card${card.dark ? ' ft-card--dark' : ''}`}
-              style={card.accent ? { background: card.accent, borderColor: 'transparent' } : {}}
+              style={card.accent ? { background: card.accent, borderColor: 'rgba(14,124,121,.12)' } : {}}
             >
               {card.content}
             </div>

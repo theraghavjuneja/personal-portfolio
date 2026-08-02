@@ -79,7 +79,7 @@ export default function Navigation() {
           left: 0;
           width: 100%;
           height: 1.5px;
-          background: #C8563B;
+          background: #0E7C79;
           transform: scaleX(0);
           transform-origin: left center;
           transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
@@ -90,21 +90,20 @@ export default function Navigation() {
         }
         .nav-link:hover,
         .nav-link.active {
-          color: #C8563B;
+          color: #0E7C79;
         }
 
         /* Logo monogram */
         .logo-mark {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-style: italic;
-          font-size: 22px;
-          font-weight: 600;
-          color: #1a1a1a;
-          letter-spacing: -0.5px;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 14px;
+          font-weight: 700;
+          color: #10141A;
+          letter-spacing: 0.02em;
           line-height: 1;
           transition: color 0.2s;
         }
-        .logo-mark:hover { color: #C8563B; }
+        .logo-mark:hover { color: #0E7C79; }
 
         /* The logo ring */
         .logo-ring {
@@ -113,13 +112,13 @@ export default function Navigation() {
           justify-content: center;
           width: 40px;
           height: 40px;
-          border-radius: 50%;
-          border: 1.5px solid rgba(26,26,26,0.18);
+          border-radius: 6px;
+          border: 1.5px solid rgba(16,20,26,0.18);
           transition: border-color 0.2s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .logo-ring:hover {
-          border-color: #C8563B;
-          transform: rotate(-6deg) scale(1.06);
+          border-color: #0E7C79;
+          transform: scale(1.06);
         }
 
         /* Reduce-motion pill */
@@ -147,9 +146,9 @@ export default function Navigation() {
           color: rgba(26,26,26,0.8);
         }
         .motion-pill.active {
-          border-color: #C8563B;
-          color: #C8563B;
-          background: rgba(200, 86, 59, 0.07);
+          border-color: #0E7C79;
+          color: #0E7C79;
+          background: rgba(14, 124, 121, 0.07);
         }
         .motion-dot {
           width: 6px;
@@ -194,11 +193,11 @@ export default function Navigation() {
           height: 46px;
           padding: 0 20px;
           border-radius: 100px;
-          background: rgba(250, 247, 242, 0.82);          /* warm-cream tint */
+          background: rgba(238, 240, 234, 0.88);          /* sage tint */
           backdrop-filter: blur(14px);
           -webkit-backdrop-filter: blur(14px);
-          border: 1px solid rgba(26,26,26,0.10);
-          box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+          border: 1px solid rgba(16,20,26,0.10);
+          box-shadow: 0 4px 24px rgba(16,20,26,.08), 0 1px 3px rgba(16,20,26,.04);
           animation: pillFloat 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
           z-index: 60;
         }
@@ -299,19 +298,21 @@ export default function Navigation() {
           >
             <span
               style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontStyle: 'italic',
-                fontSize: '17px',
-                fontWeight: 600,
-                color: '#1a1a1a',
-                letterSpacing: '-0.3px',
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#10141A',
+                letterSpacing: '0.02em',
                 transition: 'color 0.2s',
                 cursor: 'pointer',
+                border: '1.5px solid rgba(16,20,26,.18)',
+                borderRadius: '5px',
+                padding: '4px 8px',
               }}
-              onMouseEnter={(e) => ((e.target as HTMLElement).style.color = '#C8563B')}
-              onMouseLeave={(e) => ((e.target as HTMLElement).style.color = '#1a1a1a')}
+              onMouseEnter={(e) => ((e.target as HTMLElement).style.color = '#0E7C79')}
+              onMouseLeave={(e) => ((e.target as HTMLElement).style.color = '#10141A')}
             >
-              RJ
+              [RJ]
             </span>
           </a>
 
