@@ -328,7 +328,7 @@ export default function CaseStudies() {
             {/* Bottom — character illustration */}
             <div className="ws-aside__char">
               <img
-                src="https://www.manasdev.codes/images/openpeeps-character.png"
+                src="/images/imag2.png"
                 alt="Character illustration"
                 loading="lazy"
               />

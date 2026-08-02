@@ -430,13 +430,15 @@ export default function HeroSection() {
         .ti--sep { color:var(--accent); }
 
         @media (max-width:900px) {
-          .hero { grid-template-columns:1fr; grid-template-rows:auto 46vh; height:auto; }
+          .hero { grid-template-columns:1fr; grid-template-rows:auto minmax(400px, 50vh); height:auto; }
           .left { padding:44px 26px 34px; background-size:18px 18px; }
           .trace-wrap { display:none; }
           .term-meta { display:none; }
-          .term-body { font-size:11px; min-height:180px; }
+          .term-body { font-size:11px; min-height:180px; padding:16px 20px; }
           h1.hd { font-size:clamp(38px,10vw,54px); margin-bottom:28px; }
+          .console-scene { padding: 20px; }
         }
+
 
         @media (prefers-reduced-motion: reduce) {
           .l, .cta, .right, .badge, .glass, .trace-wrap, .crop, .term-stack { transition:none !important; opacity:1 !important; transform:none !important; translate:none !important; }

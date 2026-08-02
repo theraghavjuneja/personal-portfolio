@@ -207,6 +207,36 @@ export default function Navigation() {
           box-shadow: 4px 4px 0px #10141A;
           animation: pillFloat 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
           z-index: 60;
+          white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+          .nav-pill {
+            gap: 12px;
+            padding: 0 16px;
+            height: 48px;
+            width: auto;
+            max-width: 95vw;
+          }
+          .social-group, .social-divider {
+            display: none !important;
+          }
+          .nav-link {
+            font-size: 12px !important;
+          }
+        }
+        @media (max-width: 400px) {
+          .nav-pill {
+            gap: 8px;
+            padding: 0 12px;
+          }
+          .nav-link {
+            font-size: 11px !important;
+          }
+          .logo-text {
+            font-size: 11px !important;
+            padding: 2px 6px !important;
+          }
         }
       `}</style>
 
@@ -308,6 +338,7 @@ export default function Navigation() {
             aria-label="Back to top"
           >
             <span
+              className="logo-text"
               style={{
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: '13px',
@@ -355,10 +386,10 @@ export default function Navigation() {
           ))}
 
           {/* Hairline divider */}
-          <span style={{ width: '1px', height: '16px', background: 'rgba(26,26,26,0.12)' }} />
+          <span className="social-divider" style={{ width: '1px', height: '16px', background: 'rgba(26,26,26,0.12)' }} />
 
           {/* Social icons in pill */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <div className="social-group" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <a
               href="https://linkedin.com"
               target="_blank"
