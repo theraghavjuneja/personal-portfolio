@@ -29,30 +29,13 @@ export const PROJECTS: Project[] = [
     sourceUrl: '#',
   },
   {
-    title: 'Meta-Compliant WhatsApp Messaging',
-    subtitle: 'Multi-Provider Communication Layer',
-    description: 'Built stateful WhatsApp flows, webhooks, and AI chatbots on top of a multi-provider communication layer with circuit breakers across 5+ providers. Handles 500K+ messages per day.',
-    image: '/images/work-4.jpg',
-    tags: ['Case Study', 'Node.js', 'System Design'],
-    caseStudyUrl: '#',
-    liveUrl: '#',
-  },
-  {
     title: 'PDF Translation at Scale',
     subtitle: 'Serverless ML Pipeline on GCP',
     description: 'Engineered a serverless pipeline translating 200-page scanned PDFs across 20+ languages in under 3 minutes, using Pub/Sub, Cloud Run Jobs, and concurrency-controlled Gemini API calls.',
-    image: '/images/work-5.jpg',
+    image: '/images/work-4.jpg',
     tags: ['GCP', 'AI/ML', 'Pub/Sub'],
     caseStudyUrl: '#',
     liveUrl: '#',
   },
-  {
-    title: 'MediScan AI — Medical Imaging',
-    subtitle: 'Distributed ML Inference System',
-    description: 'A distributed system for MRI & X-ray disease detection, using Celery workers to offload heavy ML inference and keep the UI responsive. Integrates TensorFlow Serving with auto-scaling.',
-    image: '/images/work-6.jpg',
-    tags: ['Healthcare', 'TensorFlow', 'Distributed Systems'],
-    sourceUrl: '#',
-    liveUrl: '#',
-  },
+
 ];
