@@ -2,66 +2,124 @@ import { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import type { IconType } from 'react-icons';
+import {
+  SiNodedotjs,
+  SiGo,
+  SiPython,
+  SiTypescript,
+  SiFastapi,
+  SiPostgresql,
+  SiRedis,
+  SiApachekafka,
+  SiRabbitmq,
+  SiElastic,
+  SiDocker,
+  SiKubernetes,
+  SiTerraform,
+  SiGooglecloud,
+  SiGrafana,
+  SiPrometheus,
+} from 'react-icons/si';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ── Skills list ──────────────────────────────────────────────
+// ── "I love working on" list ────────────────────────────────
+// Rewritten to actually match a backend/cloud engineer's work.
+// Dropped: mentoring fellows & mentees, growth design, user research,
+// data visualization, product analytics, cross-functional leadership
+// — these read as product-designer skills, not yours. Edit freely;
+// this is just a reasonable backend-flavored starting point.
 const skills = [
-  { title: 'building & shipping products',    image: 'building-and-shipping.png' },
-  { title: 'delivering on business goals',    image: 'delivering-on-goals.png'   },
-  { title: 'systems thinking',               image: 'system-thinking.png'        },
-  { title: 'cross-functional leadership',     image: 'cross-functional-leadership.png' },
-  { title: 'mentoring fellows & mentees',     image: 'mentoring-designers.png'   },
-  { title: 'product analytics',               image: 'product-analytics.png'     },
-  { title: 'growth design',                   image: 'growth-design.png'         },
-  { title: 'user research',                   image: 'user-research.png'         },
-  { title: 'data visualization',              image: 'data-visusalisation.png'   },
+  { title: 'building & shipping products' },
+  { title: 'delivering on business goals' },
+  { title: 'systems thinking' },
+  { title: 'distributed systems & fault tolerance' },
+  { title: 'cloud infrastructure & cost optimization' },
+  { title: 'observability & monitoring' },
+  { title: 'api design & architecture' },
+  { title: 'infrastructure as code' },
 ];
 
 // ── Technologies I use ───────────────────────────────────────
-const TECH_ROWS = [
+// Real brand logos (Simple Icons via react-icons) instead of the
+// placeholder Unicode glyphs. A few tools (Loki, Temporal.IO, gRPC)
+// don't have an official logo in Simple Icons — those fall back to a
+// small lettered badge instead of showing a wrong/fake icon.
+type Tech = { name: string; Icon?: IconType; fallback?: string };
+
+const TECH_ROWS: Tech[][] = [
   [
-    { name: 'Node.js',     icon: '⬡' },
-    { name: 'Go',          icon: '◈' },
-    { name: 'Python',      icon: '◎' },
-    { name: 'TypeScript',  icon: '▣' },
-    { name: 'FastAPI',     icon: '⬡' },
+    { name: 'Node.js', Icon: SiNodedotjs },
+    { name: 'Go', Icon: SiGo },
+    { name: 'Python', Icon: SiPython },
+    { name: 'TypeScript', Icon: SiTypescript },
+    { name: 'FastAPI', Icon: SiFastapi },
   ],
   [
-    { name: 'PostgreSQL',  icon: '◈' },
-    { name: 'Redis',       icon: '▲' },
-    { name: 'Kafka',       icon: '◉' },
-    { name: 'RabbitMQ',   icon: '◎' },
-    { name: 'Elasticsearch', icon: '◈' },
+    { name: 'PostgreSQL', Icon: SiPostgresql },
+    { name: 'Redis', Icon: SiRedis },
+    { name: 'Kafka', Icon: SiApachekafka },
+    { name: 'RabbitMQ', Icon: SiRabbitmq },
+    { name: 'Elasticsearch', Icon: SiElastic },
   ],
   [
-    { name: 'Docker',      icon: '▣' },
-    { name: 'Kubernetes',  icon: '⬡' },
-    { name: 'Terraform',   icon: '▲' },
-    { name: 'AWS',         icon: '◉' },
-    { name: 'GCP',         icon: '◎' },
+    { name: 'Docker', Icon: SiDocker },
+    { name: 'Kubernetes', Icon: SiKubernetes },
+    { name: 'Terraform', Icon: SiTerraform },
+    // { name: 'AWS', Icon: SiAmazonaws },
+    { name: 'GCP', Icon: SiGooglecloud },
   ],
   [
-    { name: 'Grafana',     icon: '◈' },
-    { name: 'Prometheus',  icon: '◉' },
-    { name: 'Loki',        icon: '▣' },
-    { name: 'Temporal.IO', icon: '⬡' },
-    { name: 'gRPC',        icon: '▲' },
+    { name: 'Grafana', Icon: SiGrafana },
+    { name: 'Prometheus', Icon: SiPrometheus },
+    { name: 'Loki', fallback: 'Lk' },
+    { name: 'Temporal.IO', fallback: 'Tp' },
+    { name: 'gRPC', fallback: 'Rpc' },
   ],
 ];
 
+// Static, on-brand "system diagram" graphic — replaces the per-skill
+// Open-Peeps-style illustration swap, which had no real backend
+// equivalent (there's no "illustration of mentoring" to show, and the
+// hover-swap images used a totally different color palette anyway).
+function SystemDiagramGraphic() {
+  return (
+    <svg viewBox="0 0 400 400" width="100%" height="100%" style={{ maxWidth: 380 }}>
+      <path d="M80 100 L220 60" stroke="#10141A" strokeWidth="3" fill="none" />
+      <path d="M220 60 L320 150" stroke="#10141A" strokeWidth="3" fill="none" />
+      <path d="M220 60 L150 230" stroke="#10141A" strokeWidth="3" fill="none" />
+      <path d="M320 150 L300 300" stroke="#10141A" strokeWidth="3" fill="none" />
+      <path d="M150 230 L300 300" stroke="#10141A" strokeWidth="3" fill="none" />
+      <path d="M150 230 L90 330" stroke="#10141A" strokeWidth="3" fill="none" />
+
+      <circle cx="80" cy="100" r="24" fill="#CFE7E3" stroke="#10141A" strokeWidth="3" />
+      <circle cx="220" cy="60" r="30" fill="#FAFAF7" stroke="#10141A" strokeWidth="3" />
+      <circle cx="320" cy="150" r="20" fill="#0E7C79" stroke="#10141A" strokeWidth="3" />
+      <circle cx="150" cy="230" r="36" fill="#FAFAF7" stroke="#10141A" strokeWidth="3" />
+      <circle cx="300" cy="300" r="26" fill="#CFE7E3" stroke="#10141A" strokeWidth="3" />
+      <circle cx="90" cy="330" r="18" fill="#0E7C79" stroke="#10141A" strokeWidth="3" />
+
+      {/* Small "live" pulse, reusing the same blip motif used elsewhere on the site */}
+      <circle cx="320" cy="150" r="5" fill="#EEF0EA">
+        <animate attributeName="opacity" values="1;0.3;1" dur="2.2s" repeatCount="indefinite" />
+      </circle>
+    </svg>
+  );
+}
+
 export default function SpecializingSection() {
-  const sectionRef  = useRef<HTMLElement>(null);
-  const graphicRef  = useRef<HTMLDivElement>(null);
-  const headingRef  = useRef<HTMLHeadingElement>(null);
-  const eyebrowRef  = useRef<HTMLDivElement>(null);
-  const dividerRef  = useRef<HTMLDivElement>(null);
-  const skillsRef   = useRef<HTMLUListElement>(null);
-  const techRef     = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const graphicRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const eyebrowRef = useRef<HTMLDivElement>(null);
+  const dividerRef = useRef<HTMLDivElement>(null);
+  const skillsRef = useRef<HTMLUListElement>(null);
+  const techRef = useRef<HTMLDivElement>(null);
   const techHeadRef = useRef<HTMLHeadingElement>(null);
-  const rowRefs     = useRef<(HTMLDivElement | null)[]>([]);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { reducedMotion } = useReducedMotion();
-  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number>(0);
 
   useEffect(() => {
     if (reducedMotion) return;
@@ -173,14 +231,18 @@ export default function SpecializingSection() {
             {/* Left — Graphic with HUD frame */}
             <div ref={graphicRef} className="lg:w-1/2 flex justify-center relative">
               {/* Bold thick border frame */}
-              <div aria-hidden="true" style={{ position:'absolute', inset:-12, borderRadius:20, border:'3px solid #10141A', background: '#FAFAF7', boxShadow: '8px 8px 0px #10141A', pointerEvents:'none', zIndex: -1 }} />
-              
-              <img
-                src={hoveredImage ? `/images/${hoveredImage}` : '/images/specializing-graphic.png'}
-                alt={hoveredImage ? 'Hovered skill illustration' : 'Abstract creative energy illustration'}
-                className="w-full max-w-[400px] lg:max-w-[460px] relative"
-                style={{ filter: 'drop-shadow(6px 6px 0px #10141A)', transition: 'opacity 0.25s ease', zIndex: 5 }}
-              />
+              <div aria-hidden="true" style={{ position: 'absolute', inset: -12, borderRadius: 20, border: '3px solid #10141A', background: '#FAFAF7', boxShadow: '8px 8px 0px #10141A', pointerEvents: 'none', zIndex: -1 }} />
+
+              <div
+                className="w-full max-w-[400px] lg:max-w-[460px] relative flex items-center justify-center overflow-hidden"
+                style={{ filter: 'drop-shadow(6px 6px 0px #10141A)', zIndex: 5, aspectRatio: '1 / 1', borderRadius: 8, backgroundColor: '#FAFAF7' }}
+              >
+                <img
+                  src={`images/specialising-${hoveredIndex + 1}.png`}
+                  alt={skills[hoveredIndex]?.title || 'Specializing'}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
             </div>
 
             {/* Right — Skills list */}
@@ -195,7 +257,7 @@ export default function SpecializingSection() {
                   color: '#0E7C79', marginBottom: 14,
                 }}
               >
-                <span style={{ width:6, height:6, borderRadius:'50%', background:'#0E7C79', display:'inline-block', animation:'sp-blip 2.2s ease-in-out infinite' }} />
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#0E7C79', display: 'inline-block', animation: 'sp-blip 2.2s ease-in-out infinite' }} />
                 Specializing in
               </div>
 
@@ -225,7 +287,7 @@ export default function SpecializingSection() {
                     key={index}
                     className="sp-skill-item"
                     onMouseEnter={e => {
-                      setHoveredImage(skill.image);
+                      setHoveredIndex(index);
                       const el = e.currentTarget as HTMLLIElement;
                       el.style.color = '#0E7C79';
                       const bg = el.querySelector('.sp-hover-bg') as HTMLSpanElement;
@@ -234,7 +296,6 @@ export default function SpecializingSection() {
                       if (ul) ul.style.width = '100%';
                     }}
                     onMouseLeave={e => {
-                      setHoveredImage(null);
                       const el = e.currentTarget as HTMLLIElement;
                       el.style.color = '#10141A';
                       const bg = el.querySelector('.sp-hover-bg') as HTMLSpanElement;
@@ -290,25 +351,6 @@ export default function SpecializingSection() {
                   </li>
                 ))}
               </ul>
-
-              {/* Hover hint */}
-              <div style={{ marginTop: 20, display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-                <span
-                  aria-hidden="true"
-                  style={{
-                    display: 'inline-block', width: 5, height: 5,
-                    borderRadius: '50%', background: '#0E7C79',
-                    flexShrink: 0, marginTop: 7,
-                    animation: 'sp-blip 2.8s ease-in-out infinite',
-                  }}
-                />
-                <p style={{
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, fontWeight: 500,
-                  color: 'rgba(16,20,26,.4)', margin: 0, lineHeight: 1.55,
-                }}>
-                  Hover any skill to glimpse it in action.
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -328,7 +370,7 @@ export default function SpecializingSection() {
                 fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 700,
                 letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: '#0E7C79', marginBottom: 12,
               }}>
-                <span style={{ width:6, height:6, borderRadius:'50%', background:'#0E7C79', display:'inline-block', animation:'sp-blip 2.2s ease-in-out infinite' }} />
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#0E7C79', display: 'inline-block', animation: 'sp-blip 2.2s ease-in-out infinite' }} />
                 Stack
               </div>
               <h2
@@ -351,8 +393,8 @@ export default function SpecializingSection() {
               boxShadow: '4px 4px 0px #10141A',
               borderRadius: 100, padding: '8px 18px',
             }}>
-              <span style={{ width:7, height:7, borderRadius:'50%', background:'#0E7C79', animation:'sp-blip 2s ease-in-out infinite' }} />
-              <span style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:11, fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase' as const, color:'#0E7C79' }}>
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#0E7C79', animation: 'sp-blip 2s ease-in-out infinite' }} />
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#0E7C79' }}>
                 {TECH_ROWS.reduce((a, r) => a + r.length, 0)}+ tools
               </span>
             </div>
@@ -401,16 +443,30 @@ export default function SpecializingSection() {
                     >
                       <span
                         style={{
-                          fontFamily: "'IBM Plex Mono', monospace",
-                          fontSize: 14,
+                          fontSize: 15,
                           color: '#0E7C79',
                           lineHeight: 1,
                           width: 16,
-                          textAlign: 'center',
+                          height: 16,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                           flexShrink: 0,
                         }}
                       >
-                        {tech.icon}
+                        {tech.Icon ? (
+                          <tech.Icon size={16} />
+                        ) : (
+                          <span
+                            style={{
+                              fontFamily: "'IBM Plex Mono', monospace",
+                              fontSize: 9,
+                              fontWeight: 700,
+                            }}
+                          >
+                            {tech.fallback}
+                          </span>
+                        )}
                       </span>
                       <span
                         style={{
@@ -438,10 +494,6 @@ export default function SpecializingSection() {
         @keyframes sp-blip {
           0%, 100% { box-shadow: 0 0 0 0 rgba(14,124,121,.55); }
           50%       { box-shadow: 0 0 0 5px rgba(14,124,121,0);  }
-        }
-        @keyframes sp-shimmer {
-          0%   { background-position: 200% center; }
-          100% { background-position: -200% center; }
         }
         .tech-marquee-left {
           animation: marquee-l 35s linear infinite;
