@@ -83,30 +83,30 @@ const TECH_ROWS: Tech[][] = [
 // Open-Peeps-style illustration swap, which had no real backend
 // equivalent (there's no "illustration of mentoring" to show, and the
 // hover-swap images used a totally different color palette anyway).
-function SystemDiagramGraphic() {
-  return (
-    <svg viewBox="0 0 400 400" width="100%" height="100%" style={{ maxWidth: 380 }}>
-      <path d="M80 100 L220 60" stroke="#10141A" strokeWidth="3" fill="none" />
-      <path d="M220 60 L320 150" stroke="#10141A" strokeWidth="3" fill="none" />
-      <path d="M220 60 L150 230" stroke="#10141A" strokeWidth="3" fill="none" />
-      <path d="M320 150 L300 300" stroke="#10141A" strokeWidth="3" fill="none" />
-      <path d="M150 230 L300 300" stroke="#10141A" strokeWidth="3" fill="none" />
-      <path d="M150 230 L90 330" stroke="#10141A" strokeWidth="3" fill="none" />
+// function SystemDiagramGraphic() {
+//   return (
+//     <svg viewBox="0 0 400 400" width="100%" height="100%" style={{ maxWidth: 380 }}>
+//       <path d="M80 100 L220 60" stroke="#10141A" strokeWidth="3" fill="none" />
+//       <path d="M220 60 L320 150" stroke="#10141A" strokeWidth="3" fill="none" />
+//       <path d="M220 60 L150 230" stroke="#10141A" strokeWidth="3" fill="none" />
+//       <path d="M320 150 L300 300" stroke="#10141A" strokeWidth="3" fill="none" />
+//       <path d="M150 230 L300 300" stroke="#10141A" strokeWidth="3" fill="none" />
+//       <path d="M150 230 L90 330" stroke="#10141A" strokeWidth="3" fill="none" />
 
-      <circle cx="80" cy="100" r="24" fill="#CFE7E3" stroke="#10141A" strokeWidth="3" />
-      <circle cx="220" cy="60" r="30" fill="#FAFAF7" stroke="#10141A" strokeWidth="3" />
-      <circle cx="320" cy="150" r="20" fill="#0E7C79" stroke="#10141A" strokeWidth="3" />
-      <circle cx="150" cy="230" r="36" fill="#FAFAF7" stroke="#10141A" strokeWidth="3" />
-      <circle cx="300" cy="300" r="26" fill="#CFE7E3" stroke="#10141A" strokeWidth="3" />
-      <circle cx="90" cy="330" r="18" fill="#0E7C79" stroke="#10141A" strokeWidth="3" />
+//       <circle cx="80" cy="100" r="24" fill="#CFE7E3" stroke="#10141A" strokeWidth="3" />
+//       <circle cx="220" cy="60" r="30" fill="#FAFAF7" stroke="#10141A" strokeWidth="3" />
+//       <circle cx="320" cy="150" r="20" fill="#0E7C79" stroke="#10141A" strokeWidth="3" />
+//       <circle cx="150" cy="230" r="36" fill="#FAFAF7" stroke="#10141A" strokeWidth="3" />
+//       <circle cx="300" cy="300" r="26" fill="#CFE7E3" stroke="#10141A" strokeWidth="3" />
+//       <circle cx="90" cy="330" r="18" fill="#0E7C79" stroke="#10141A" strokeWidth="3" />
 
-      {/* Small "live" pulse, reusing the same blip motif used elsewhere on the site */}
-      <circle cx="320" cy="150" r="5" fill="#EEF0EA">
-        <animate attributeName="opacity" values="1;0.3;1" dur="2.2s" repeatCount="indefinite" />
-      </circle>
-    </svg>
-  );
-}
+//       {/* Small "live" pulse, reusing the same blip motif used elsewhere on the site */}
+//       <circle cx="320" cy="150" r="5" fill="#EEF0EA">
+//         <animate attributeName="opacity" values="1;0.3;1" dur="2.2s" repeatCount="indefinite" />
+//       </circle>
+//     </svg>
+//   );
+// }
 
 export default function SpecializingSection() {
   const sectionRef = useRef<HTMLElement>(null);
